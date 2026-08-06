@@ -232,8 +232,6 @@ a.chip:hover { background: rgba(255, 255, 255, .2); border-color: #60a5fa; trans
 }
 .gb-form-head, .gb-list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
 .gb-form-head h3, .gb-list-head h3 { font-size: 1.15rem; }
-.gb-form-badge { font-size: .75rem; padding: 4px 12px; border-radius: 999px; background: #eef3fc; color: #33508f; border: 1px solid #dfe9fb; white-space: nowrap; }
-.gb-form-badge.online { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
 .form-field { margin-bottom: 16px; }
 .form-field label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
 .form-field label em { color: #dc2626; font-style: normal; }

@@ -1,7 +1,7 @@
 /* ============================================================
    留言板脚本
    - 已配置 Supabase（js/config.js）：读写云端数据库，并实时接收新留言
-   - 未配置 Supabase：演示模式，用浏览器本地存储保存/读取测试数据
+   - 未配置 Supabase：本地兜底，用浏览器本地存储保存/读取留言
    ============================================================ */
 (function () {
   "use strict";
@@ -16,7 +16,6 @@
   var emailInput = document.getElementById("gbEmail");
   var countEl = document.getElementById("gbCount");
   var tipEl = document.getElementById("gbTip");
-  var badgeEl = document.getElementById("gbModeBadge");
   var messagesEl = document.getElementById("gbMessages");
   var totalEl = document.getElementById("gbTotal");
   var submitBtn = document.getElementById("gbSubmit");
@@ -87,12 +86,9 @@
     }
   }
   usingCloud = !!client;
-  if (badgeEl) {
-    badgeEl.textContent = usingCloud ? "已连接云端数据库" : "演示模式（本地存储）";
-    badgeEl.classList.toggle("online", usingCloud);
-  }
 
-  /* ---------- 演示模式：本地存储 + 测试数据 ---------- */
+
+  /* ---------- 本地兜底：浏览器存储 + 测试数据 ---------- */
   function getLocalList() {
     try {
       var raw = localStorage.getItem(DEMO_KEY);
@@ -101,7 +97,7 @@
     var seed = [
       { id: 1, name: "路过的小明", content: "第一次来，网站做得很清爽，留言板也安排上了 👍", email: "", created_at: isoAgo(3, 2) },
       { id: 2, name: "前端同学", content: "博主加油！期待分享更多项目～", email: "", created_at: isoAgo(1, 4) },
-      { id: 3, name: "测试用户", content: "这是演示模式的测试数据。配置好 Supabase 数据库后，会自动切换为云端存取。", email: "", created_at: isoAgo(0, 2) }
+      { id: 3, name: "测试用户", content: "这是本地兜底的测试数据，正式留言保存在云端数据库。", email: "", created_at: isoAgo(0, 2) }
     ];
     try { localStorage.setItem(DEMO_KEY, JSON.stringify(seed)); } catch (e) { /* 忽略存储异常 */ }
     return seed;
@@ -150,7 +146,7 @@
   function renderList(list) {
     if (!messagesEl) return;
     messagesEl.innerHTML = "";
-    // 按时间倒序（新留言在前），云端与演示模式保持一致
+    // 按时间倒序（新留言在前）
     var arr = (list || []).slice().sort(function (a, b) {
       return new Date(b.created_at) - new Date(a.created_at);
     });
@@ -279,7 +275,7 @@
       prependMessage(msg);
       setBusy(false);
       resetForm();
-      showTip("留言发布成功（演示模式，已保存在本机）🎉", false);
+      showTip("留言发布成功 🎉", false);
     }
   });
 

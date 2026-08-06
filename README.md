@@ -25,25 +25,16 @@ personal-website/
 
 页面新增了「留言板」板块，任何访问网站的游客都可以：
 
-- **查看留言**：进入页面自动加载全部留言；
+- **查看留言**：进入页面自动从 Supabase 云端加载全部留言；
 - **发表留言**：填写昵称与内容即可发布（邮箱选填），发布后实时出现在列表顶部；
-- **实时更新**：接入 Supabase 后，其他访客的新留言无需刷新页面即可显示。
+- **实时更新**：其他访客的新留言无需刷新页面即可显示（Realtime 推送）。
 
-### 默认模式：本地演示
+### 数据库（已连接）
 
-`js/config.js` 中的 Supabase 配置留空时，留言板自动进入**演示模式**：
-留言保存在浏览器本地存储（localStorage）中，内置了 3 条测试数据，
-无需任何后端即可体验完整的留言、读取与持久化流程。
-
-### 接入 Supabase（正式数据库）
-
-1. 到 [supabase.com](https://supabase.com/dashboard) 注册并创建一个项目（免费）；
-2. 打开项目 **SQL Editor**，粘贴并运行 `supabase/schema.sql`（自动完成建表、权限与测试数据）；
-3. 打开项目 **Settings → API**，复制 **Project URL** 与 **anon public key**；
-4. 将两个值填入 `js/config.js` 保存，刷新页面即可。
-
-配置完成后，右上角徽标会从「演示模式（本地存储）」变为「已连接云端数据库」，
-留言将真正保存到 Supabase 的 `messages` 表中，任何访客都能看到。
+`js/config.js` 已配置真实的 Supabase 项目，所有留言都保存在云端的 `messages` 表中，
+任何访客都能读取和发表留言。更换 Supabase 项目时：新建项目 → 在 SQL Editor 运行
+`supabase/schema.sql` → 把新的 **Project URL** 与 **anon public key** 填入 `js/config.js`
+即可。若配置留空，留言板会自动使用浏览器本地存储兜底，便于离线预览。
 
 ### 数据库说明（supabase/schema.sql）
 

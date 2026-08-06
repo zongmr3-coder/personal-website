@@ -1,15 +1,9 @@
 /* ============================================================
    站点配置 — 留言板数据库（Supabase）
-   ------------------------------------------------------------
-   1. 到 https://supabase.com/dashboard 创建一个项目（免费）
-   2. 在项目的 SQL Editor 中运行 supabase/schema.sql 建表
-   3. 打开 项目 Settings → API，复制 Project URL 和 anon public key
-   4. 把两个值填到下面引号里，保存即可
-
-   两个值留空时，留言板自动进入“演示模式”，
-   使用浏览器本地存储保存/读取测试数据，无需任何配置即可体验。
+   已连接云端数据库，留言保存在 Supabase 的 messages 表中。
+   如更换项目，请到 项目 Settings → API 复制新的值填入。
    ============================================================ */
 window.SITE_CONFIG = {
-  SUPABASE_URL: "",
-  SUPABASE_ANON_KEY: ""
+  SUPABASE_URL: "https://urpwuuhexgqdexskhyit.supabase.co",
+  SUPABASE_ANON_KEY: "sb_publishable_30ZgXQZOKZP0GaT0rmggQg_sXgVf0i2"
 };
