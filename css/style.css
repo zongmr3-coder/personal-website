@@ -174,7 +174,13 @@ a.meta-chip:hover{border-color:var(--accent);color:var(--accent)}
 .gb-list-head{display:flex;justify-content:space-between;align-items:baseline;margin-bottom:16px}
 .gb-list-head h3{font-family:var(--mono);font-size:.95rem;color:var(--accent);font-weight:500;margin-bottom:0}
 .gb-total{font-size:.8rem;color:var(--ink-soft);border:1px solid var(--bg-line);border-radius:999px;padding:3px 12px;font-family:var(--mono)}
-.gb-messages{max-height:540px;overflow:auto;display:flex;flex-direction:column;gap:14px;padding-right:4px}
+.gb-messages{max-height:540px;overflow-y:auto;display:flex;flex-direction:column;gap:14px;padding-right:6px}
+/* ???????????? */
+.gb-messages{scrollbar-width:thin;scrollbar-color:#2E4D78 var(--bg-card)}
+.gb-messages::-webkit-scrollbar{width:8px}
+.gb-messages::-webkit-scrollbar-track{background:var(--bg-card);border-radius:6px}
+.gb-messages::-webkit-scrollbar-thumb{background:#2E4D78;border-radius:6px;border:2px solid var(--bg-card)}
+.gb-messages::-webkit-scrollbar-thumb:hover{background:var(--accent)}
 .gb-msg{display:flex;gap:13px;background:var(--bg);border:1px solid var(--bg-line);border-radius:8px;padding:16px 18px}
 .gb-avatar{width:40px;height:40px;border-radius:50%;background:var(--accent-dim);border:1px solid rgba(100,255,218,.4);color:var(--accent);display:flex;align-items:center;justify-content:center;font-weight:600;flex-shrink:0}
 .gb-msg-meta{display:flex;gap:10px;align-items:baseline}
