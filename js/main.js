@@ -1,4 +1,4 @@
-﻿/* ============================================================
+/* ============================================================
    仲子龙 · 个人主页 交互脚本
    ============================================================ */
 (function () {
@@ -84,6 +84,18 @@
     revealEls.forEach(function (el) { el.classList.add("visible"); });
   }
 
+  /* ---------- 项目折叠展开 ---------- */
+  var projectsList = document.querySelector(".projects-list");
+  if (projectsList) {
+    projectsList.addEventListener("click", function (e) {
+      var toggle = e.target.closest(".project-toggle");
+      if (!toggle) return;
+      var item = toggle.closest(".project-item");
+      if (!item) return;
+      var open = item.classList.toggle("open");
+      toggle.setAttribute("aria-expanded", String(open));
+    });
+  }
   /* ---------- 回到顶部 ---------- */
   if (toTop) {
     toTop.addEventListener("click", function () {
