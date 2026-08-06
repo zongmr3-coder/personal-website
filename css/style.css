@@ -239,5 +239,7 @@ body.sb-collapsed .sb-link .no{font-size:1.02rem}
 body.sb-collapsed .main{margin-left:86px}
 @media (max-width:1000px){.sb-collapse{display:none}}
 
-/* ---------- 鼠标交互：光标光晕跟随（方向A） ---------- */
-body::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;background:radial-gradient(460px circle at var(--mx,50%) var(--my,20%),rgba(100,255,218,.10),transparent 70%)}
+
+/* ---------- 星海背景：闪烁星星 + 鼠标推开（方向A升级） ---------- */
+.star-bg{position:fixed;inset:0;z-index:1;pointer-events:none}
+.main{position:relative;z-index:2}

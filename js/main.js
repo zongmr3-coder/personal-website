@@ -106,18 +106,67 @@
 
   onScroll();
 })();
-/* ---------- 鼠标交互：光标光晕跟随（方向A） ---------- */
+
+/* ---------- 星海背景：闪烁星星 + 鼠标推开（方向A升级） ---------- */
 (function () {
   "use strict";
-  var bodyEl = document.body;
-  var gtx = window.innerWidth / 2, gty = window.innerHeight / 3;
-  var cx = gtx, cy = gty;
-  document.addEventListener("mousemove", function (e) { gtx = e.clientX; gty = e.clientY; }, { passive: true });
-  (function loop() {
-    cx += (gtx - cx) * 0.14;
-    cy += (gty - cy) * 0.14;
-    bodyEl.style.setProperty("--mx", cx.toFixed(1) + "px");
-    bodyEl.style.setProperty("--my", cy.toFixed(1) + "px");
+  var canvas = document.createElement("canvas");
+  canvas.className = "star-bg";
+  canvas.setAttribute("aria-hidden", "true");
+  document.body.insertBefore(canvas, document.body.firstChild);
+  var ctx = canvas.getContext("2d");
+  var stars = [], W = 0, H = 0;
+  var PUSH_R = 150, PUSH_MAX = 30;
+  function resize() {
+    W = canvas.width = window.innerWidth;
+    H = canvas.height = window.innerHeight;
+    var count = Math.min(170, Math.round((W * H) / 7800));
+    stars = [];
+    for (var i = 0; i < count; i++) {
+      var big = Math.random() < 0.12;
+      stars.push({
+        ox: Math.random() * W,
+        oy: Math.random() * H,
+        r: big ? (Math.random() * 0.9 + 1.5) : (Math.random() * 0.9 + 0.5),
+        base: Math.random() * Math.PI * 2,
+        speed: Math.random() * 1.4 + 0.5,
+        color: big ? "#64FFDA" : (Math.random() < 0.85 ? "#EAF6FF" : "#B9CFFF"),
+        cx: 0, cy: 0
+      });
+    }
+  }
+  var tx = -9999, ty = -9999, smx = -9999, smy = -9999;
+  document.addEventListener("mousemove", function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
+  document.addEventListener("mouseleave", function () { tx = -9999; ty = -9999; });
+  window.addEventListener("resize", resize);
+  function loop(t) {
+    var time = t / 1000;
+    smx += (tx - smx) * 0.14;
+    smy += (ty - smy) * 0.14;
+    ctx.clearRect(0, 0, W, H);
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      var dx = s.ox - smx, dy = s.oy - smy;
+      var dist = Math.sqrt(dx * dx + dy * dy);
+      if (dist < PUSH_R && dist > 0.01) {
+        var k = 1 - dist / PUSH_R;
+        var gx = (dx / dist) * PUSH_MAX * k;
+        var gy = (dy / dist) * PUSH_MAX * k;
+        s.cx += (gx - s.cx) * 0.055;
+        s.cy += (gy - s.cy) * 0.055;
+      } else {
+        s.cx *= 0.95; s.cy *= 0.95;
+      }
+      var tw = Math.sin(time * s.speed + s.base) * 0.5 + 0.5;
+      ctx.globalAlpha = 0.18 + tw * 0.75;
+      ctx.fillStyle = s.color;
+      ctx.beginPath();
+      ctx.arc(s.ox + s.cx, s.oy + s.cy, s.r, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalAlpha = 1;
     requestAnimationFrame(loop);
-  })();
+  }
+  resize();
+  requestAnimationFrame(loop);
 })();
