@@ -74,6 +74,25 @@
       toggle.setAttribute("aria-expanded", String(open));
     });
   }
+
+  /* ---------- 侧边栏收起 ---------- */
+  var sbCollapse = document.getElementById("sbCollapse");
+  if (sbCollapse) {
+    function applyCollapsed(collapsed) {
+      document.body.classList.toggle("sb-collapsed", collapsed);
+      sbCollapse.textContent = collapsed ? "»" : "«";
+      sbCollapse.setAttribute("aria-expanded", String(!collapsed));
+    }
+    sbCollapse.addEventListener("click", function () {
+      var collapsed = document.body.classList.toggle("sb-collapsed");
+      applyCollapsed(collapsed);
+      try { localStorage.setItem("sidebar_collapsed", collapsed ? "1" : "0"); } catch (e) {}
+    });
+    try {
+      if (localStorage.getItem("sidebar_collapsed") === "1") applyCollapsed(true);
+    } catch (e) {}
+  }
+
   /* ---------- 回到顶部 ---------- */
   if (toTop) {
     toTop.addEventListener("click", function () {
@@ -86,4 +105,19 @@
   if (yearEl) yearEl.textContent = String(new Date().getFullYear());
 
   onScroll();
+})();
+/* ---------- 鼠标交互：光标光晕跟随（方向A） ---------- */
+(function () {
+  "use strict";
+  var bodyEl = document.body;
+  var gtx = window.innerWidth / 2, gty = window.innerHeight / 3;
+  var cx = gtx, cy = gty;
+  document.addEventListener("mousemove", function (e) { gtx = e.clientX; gty = e.clientY; }, { passive: true });
+  (function loop() {
+    cx += (gtx - cx) * 0.14;
+    cy += (gty - cy) * 0.14;
+    bodyEl.style.setProperty("--mx", cx.toFixed(1) + "px");
+    bodyEl.style.setProperty("--my", cy.toFixed(1) + "px");
+    requestAnimationFrame(loop);
+  })();
 })();

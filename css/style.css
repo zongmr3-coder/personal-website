@@ -20,7 +20,7 @@ h1,h2,h3{text-wrap:balance}
 .container{width:min(1080px,94%);margin:0 auto}
 
 /* ---------- 左侧固定侧栏 ---------- */
-.sidebar{position:fixed;left:0;top:0;bottom:0;width:270px;padding:44px 30px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--bg-line);background:rgba(10,25,47,.92);backdrop-filter:blur(8px);z-index:100}
+.sidebar{position:fixed;left:0;top:0;bottom:0;width:270px;padding:44px 30px;display:flex;flex-direction:column;justify-content:space-between;border-right:1px solid var(--bg-line);background:rgba(10,25,47,.92);backdrop-filter:blur(8px);z-index:100;transition:width .35s ease}
 .sb-brand{font-family:var(--mono);font-size:1.15rem;font-weight:500;color:var(--accent);letter-spacing:1px}
 .sb-name{font-size:1.05rem;font-weight:600;margin-top:8px}
 .sb-role{font-size:.8rem;color:var(--ink-soft);font-family:var(--mono)}
@@ -34,7 +34,7 @@ h1,h2,h3{text-wrap:balance}
 .sb-foot a:hover{color:var(--accent)}
 
 /* ---------- 主区 ---------- */
-.main{margin-left:270px}
+.main{margin-left:270px;transition:margin-left .35s ease}
 
 /* ---------- Hero ---------- */
 .hero{min-height:100vh;display:flex;align-items:center;padding:120px 0 80px;position:relative}
@@ -227,3 +227,17 @@ a.meta-chip:hover{border-color:var(--accent);color:var(--accent)}
   .about-grid,.awards-grid{grid-template-columns:1fr}
   .stat-bar{grid-template-columns:1fr 1fr}
 }
+/* ---------- ????? ---------- */
+.sb-collapse{position:absolute;top:14px;right:12px;z-index:6;width:30px;height:30px;border-radius:8px;border:1px solid var(--bg-line);background:var(--bg-card);color:var(--accent);font-size:.95rem;cursor:pointer;line-height:1;transition:background .25s,color .25s,right .3s,transform .3s}
+.sb-collapse:hover{background:var(--accent);color:#0A192F}
+body.sb-collapsed .sidebar{width:86px}
+body.sb-collapsed .sb-collapse{right:50%;transform:translateX(50%)}
+body.sb-collapsed .sb-brand,body.sb-collapsed .sb-name,body.sb-collapsed .sb-role,body.sb-collapsed .sb-foot,body.sb-collapsed .sb-txt{display:none}
+body.sb-collapsed .sb-nav{margin-top:64px;align-items:center}
+body.sb-collapsed .sb-link{justify-content:center;padding:10px 0}
+body.sb-collapsed .sb-link .no{font-size:1.02rem}
+body.sb-collapsed .main{margin-left:86px}
+@media (max-width:1000px){.sb-collapse{display:none}}
+
+/* ---------- 鼠标交互：光标光晕跟随（方向A） ---------- */
+body::after{content:"";position:fixed;inset:0;z-index:999;pointer-events:none;background:radial-gradient(460px circle at var(--mx,50%) var(--my,20%),rgba(100,255,218,.10),transparent 70%)}
