@@ -254,7 +254,7 @@
           var row = res.data && res.data[0];
           if (row) prependMessage(row);
           resetForm();
-          showTip("留言发布成功，已保存到云端 🎉", false);
+          showTip("留言发布成功 🎉", false);
         })
         .catch(function (err) {
           setBusy(false);
