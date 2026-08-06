@@ -5,56 +5,65 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>仲子龙 · 个人主页</title>
 <meta name="description" content="仲子龙——自动化专业2024届本科毕业生，熟悉Java/Python/前端开发，注重团队协作，期待与你合作。">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%232563eb%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2256%22 text-anchor=%22middle%22 fill=%22white%22 font-family=%22Microsoft YaHei,sans-serif%22%3E龙%3C/text%3E%3C/svg%3E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%22http://www.w3.org/2000/svg%22 viewBox=%220 0 100 100%22%3E%3Crect width=%22100%22 height=%22100%22 rx=%2222%22 fill=%22%230A192F%22/%3E%3Ctext x=%2250%22 y=%2268%22 font-size=%2256%22 text-anchor=%22middle%22 fill=%22%2364FFDA%22 font-family=%22Microsoft YaHei,sans-serif%22%3E龙%3C/text%3E%3C/svg%3E">
 <script>document.documentElement.classList.add("js");</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
 
-<!-- ======= 导航栏 ======= -->
-<header class="site-header" id="siteHeader">
-  <div class="container nav-wrap">
-    <a href="#home" class="brand">仲<span>子龙</span></a>
-    <nav class="main-nav" id="mainNav" aria-label="主导航">
-      <a href="#home" class="nav-link active">首页</a>
-      <a href="#about" class="nav-link">关于我</a>
-      <a href="#skills" class="nav-link">技能</a>
-      <a href="#experience" class="nav-link">经历</a>
-      <a href="#projects" class="nav-link">项目</a>
-      <a href="#awards" class="nav-link">荣誉</a>
-      <a href="#guestbook" class="nav-link">留言</a>
-      <a href="#contact" class="nav-link">联系</a>
+<!-- ======= 左侧固定导航 ======= -->
+<aside class="sidebar" id="sidebar">
+  <div>
+    <div class="sb-brand">~ zhong-zilong</div>
+    <div class="sb-name">仲子龙</div>
+    <div class="sb-role">Automation / Java · Python</div>
+    <nav class="sb-nav" id="mainNav" aria-label="主导航">
+      <a href="#home" class="sb-link active"><span class="no">00.</span>首页</a>
+      <a href="#about" class="sb-link"><span class="no">01.</span>关于我</a>
+      <a href="#skills" class="sb-link"><span class="no">02.</span>技能</a>
+      <a href="#experience" class="sb-link"><span class="no">03.</span>经历</a>
+      <a href="#projects" class="sb-link"><span class="no">04.</span>项目</a>
+      <a href="#awards" class="sb-link"><span class="no">05.</span>荣誉</a>
+      <a href="#guestbook" class="sb-link"><span class="no">06.</span>留言</a>
+      <a href="#contact" class="sb-link"><span class="no">07.</span>联系</a>
     </nav>
-    <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
-      <span></span><span></span><span></span>
-    </button>
   </div>
-</header>
+  <div class="sb-foot">
+    <div>mail: <a href="mailto:zongmr3@gmail.com">zongmr3@gmail.com</a></div>
+    <div>tel: <a href="tel:17858831484">17858831484</a></div>
+    <div>hangzhou · 25y</div>
+  </div>
+</aside>
 
+<div class="main">
 <!-- ======= 首页/Hero ======= -->
 <section class="hero" id="home">
-  <div class="hero-bg" aria-hidden="true"></div>
   <div class="container hero-inner">
+    <div class="hero-txt">
+      <p class="hero-hi reveal">// 你好，我是</p>
+      <h1 class="hero-name reveal">仲子龙<span class="dot">.</span></h1>
+      <p class="hero-role reveal"><span class="typed-text" id="typedText"></span><span class="caret" aria-hidden="true"></span></p>
+      <p class="hero-desc reveal">自动化专业 · 2024届本科毕业生 · 热衷钻研与创造的开发者</p>
+      <div class="hero-meta reveal">
+        <a class="meta-chip" href="tel:17858831484">📞 17858831484</a>
+        <a class="meta-chip" href="mailto:zongmr3@gmail.com">✉️ zongmr3@gmail.com</a>
+        <span class="meta-chip">🎂 25岁</span>
+      </div>
+      <div class="hero-cta reveal">
+        <a href="#contact" class="btn btn-primary">联系我</a>
+        <a href="#projects" class="btn btn-ghost">看看我的项目</a>
+      </div>
+    </div>
     <div class="hero-avatar reveal">
       <div class="avatar-ring">
         <div class="avatar-core"><img src="1.jpg" alt="仲子龙" class="avatar-photo"></div>
       </div>
     </div>
-    <p class="hero-greeting reveal">你好，我是</p>
-    <h1 class="hero-name reveal">仲子龙</h1>
-    <p class="hero-role reveal"><span class="typed-text" id="typedText"></span><span class="caret" aria-hidden="true"></span></p>
-    <p class="hero-desc reveal">自动化专业 · 2024届本科毕业生 · 热衷钻研与创造的开发者</p>
-    <div class="hero-contacts reveal">
-      <a class="chip" href="tel:17858831484">📞 17858831484</a>
-      <a class="chip" href="mailto:zongmr3@gmail.com">✉️ zongmr3@gmail.com</a>
-      <span class="chip">🎂 25岁</span>
-    </div>
-    <div class="hero-actions reveal">
-      <a href="#contact" class="btn btn-primary">联系我</a>
-      <a href="#projects" class="btn btn-ghost">看看我的项目</a>
-    </div>
-    <a href="#about" class="scroll-hint" aria-label="向下滚动"><span class="mouse"><span class="wheel"></span></span></a>
   </div>
+  <a href="#about" class="scroll-hint" aria-label="向下滚动">scroll</a>
 </section>
 
 <main>
@@ -62,26 +71,14 @@
 <section class="section" id="about">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">ABOUT</span>
-      <h2>关于我</h2>
-      <p class="section-sub">脚踏实地，保持好奇，乐于把每一件事做好</p>
+      <div class="sec-label">01. 关于我</div>
+      <h2 class="sec-title">About Me</h2>
+      <p class="sec-sub">脚踏实地，保持好奇，乐于把每一件事做好</p>
     </div>
     <div class="about-grid">
-      <div class="about-card reveal">
-        <div class="about-icon">🧠</div>
-        <h3>学习能力强</h3>
-        <p>有较强的求知欲与学习能力，善于并乐于学习，敢于接受新挑战。</p>
-      </div>
-      <div class="about-card reveal">
-        <div class="about-icon">🤝</div>
-        <h3>善于协作</h3>
-        <p>团队协作能力强，有整合多人多资源活动的经验，擅长与团队一同解决问题。</p>
-      </div>
-      <div class="about-card reveal">
-        <div class="about-icon">🎯</div>
-        <h3>稳重务实</h3>
-        <p>能脚踏实地、稳重谨慎地面对工作，拥有良好的沟通与协调能力。</p>
-      </div>
+      <div class="about-card reveal"><span class="idx">01</span><h3>学习能力强</h3><p>有较强的求知欲与学习能力，善于并乐于学习，敢于接受新挑战。</p></div>
+      <div class="about-card reveal"><span class="idx">02</span><h3>善于协作</h3><p>团队协作能力强，有整合多人多资源活动的经验，擅长与团队一同解决问题。</p></div>
+      <div class="about-card reveal"><span class="idx">03</span><h3>稳重务实</h3><p>能脚踏实地、稳重谨慎地面对工作，拥有良好的沟通与协调能力。</p></div>
     </div>
     <div class="stat-bar reveal">
       <div class="stat"><strong>25</strong><span>年龄</span></div>
@@ -93,206 +90,99 @@
 </section>
 
 <!-- ======= 技能 ======= -->
-<section class="section section-alt" id="skills">
+<section class="section" id="skills">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">SKILLS</span>
-      <h2>技能与优势</h2>
-      <p class="section-sub">从后端到前端，从数据库到设计，持续学习不断积累</p>
+      <div class="sec-label">02. 技能</div>
+      <h2 class="sec-title">Skills</h2>
+      <p class="sec-sub">从后端到前端，从数据库到设计，持续学习不断积累</p>
     </div>
     <div class="skills-grid">
-      <div class="skill-group reveal">
-        <h3><span class="sg-icon">💻</span>编程语言</h3>
-        <div class="tags">
-          <span class="tag">C / C++</span>
-          <span class="tag">Java</span>
-          <span class="tag">Python</span>
-          <span class="tag">SQL</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <h3><span class="sg-icon">🗄️</span>后端开发</h3>
-        <div class="tags">
-          <span class="tag">Spring</span>
-          <span class="tag">SpringBoot</span>
-          <span class="tag">SSM</span>
-          <span class="tag">JSP</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <h3><span class="sg-icon">🎨</span>前端技术</h3>
-        <div class="tags">
-          <span class="tag">HTML</span>
-          <span class="tag">CSS</span>
-          <span class="tag">JavaScript</span>
-          <span class="tag">AJAX</span>
-          <span class="tag">Bootstrap</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <h3><span class="sg-icon">📊</span>数据库</h3>
-        <div class="tags">
-          <span class="tag">MySQL</span>
-          <span class="tag">Oracle</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <h3><span class="sg-icon">🛠️</span>系统与工具</h3>
-        <div class="tags">
-          <span class="tag">Linux</span>
-          <span class="tag">Git / Maven</span>
-          <span class="tag">IDEA</span>
-          <span class="tag">Navicat</span>
-          <span class="tag">Tomcat</span>
-        </div>
-      </div>
-      <div class="skill-group reveal">
-        <h3><span class="sg-icon">✏️</span>设计与工程软件</h3>
-        <div class="tags">
-          <span class="tag">Office</span>
-          <span class="tag">Photoshop</span>
-          <span class="tag">Premiere</span>
-          <span class="tag">InDesign</span>
-          <span class="tag">Illustrator</span>
-          <span class="tag">CAD</span>
-        </div>
-      </div>
+      <div class="skill-group reveal"><h3>编程语言</h3><div class="tags"><span class="tag">C / C++</span><span class="tag">Java</span><span class="tag">Python</span><span class="tag">SQL</span></div></div>
+      <div class="skill-group reveal"><h3>后端开发</h3><div class="tags"><span class="tag">Spring</span><span class="tag">SpringBoot</span><span class="tag">SSM</span><span class="tag">JSP</span></div></div>
+      <div class="skill-group reveal"><h3>前端技术</h3><div class="tags"><span class="tag">HTML</span><span class="tag">CSS</span><span class="tag">JavaScript</span><span class="tag">AJAX</span><span class="tag">Bootstrap</span></div></div>
+      <div class="skill-group reveal"><h3>数据库</h3><div class="tags"><span class="tag">MySQL</span><span class="tag">Oracle</span></div></div>
+      <div class="skill-group reveal"><h3>系统与工具</h3><div class="tags"><span class="tag">Linux</span><span class="tag">Git / Maven</span><span class="tag">IDEA</span><span class="tag">Navicat</span><span class="tag">Tomcat</span></div></div>
+      <div class="skill-group reveal"><h3>设计与工程软件</h3><div class="tags"><span class="tag">Office</span><span class="tag">Photoshop</span><span class="tag">Premiere</span><span class="tag">InDesign</span><span class="tag">Illustrator</span><span class="tag">CAD</span></div></div>
     </div>
   </div>
-</section>
-
-<!-- ======= 经历 ======= -->
+</section><!-- ======= 经历 ======= -->
 <section class="section" id="experience">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">EXPERIENCE</span>
-      <h2>教育与工作经历</h2>
-      <p class="section-sub">从校园到职场，每一步都认真走过</p>
+      <div class="sec-label">03. 经历</div>
+      <h2 class="sec-title">Experience</h2>
+      <p class="sec-sub">从校园到职场，每一步都认真走过</p>
     </div>
     <div class="timeline">
       <div class="tl-item reveal">
         <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-head">
-            <h3>自动化 · 本科（2024届）</h3>
-            <span class="tl-date">2020.09 - 2024.06</span>
-          </div>
-          <p class="tl-org">杭州电子科技大学信息工程学院 · 机械工程学院（全日制）</p>
-          <p class="tl-courses">相关课程：JAVA、C/C++、Python、大数据与人工智能、自动控制原理、电机拖动</p>
-        </div>
+        <div class="tl-head"><h3>自动化 · 本科（2024届）</h3><span class="tl-date">2020.09 - 2024.06</span></div>
+        <p class="tl-org">杭州电子科技大学信息工程学院 · 机械工程学院（全日制）</p>
+        <p class="tl-courses">相关课程：JAVA、C/C++、Python、大数据与人工智能、自动控制原理、电机拖动</p>
       </div>
       <div class="tl-item reveal">
         <div class="tl-dot"></div>
-        <div class="tl-card">
-          <div class="tl-head">
-            <h3>电机研发工程师</h3>
-            <span class="tl-date">2024.06 - 2025.07</span>
-          </div>
-          <p class="tl-org">杭州钱江制冷压缩机集团有限公司 · 产品研发室</p>
-          <ul class="tl-list">
-            <li>参与现有电机系列改进优化，如电机参数优化设计等；</li>
-            <li>负责新品电机相关图文导入，编制电机产品图纸等相关文件；</li>
-            <li>负责完成新品电机试制及跟踪；</li>
-            <li>协助部门完成新产品试样等辅助工作，如铁芯拼接、变频电机生产试样等。</li>
-          </ul>
-        </div>
+        <div class="tl-head"><h3>电机研发工程师</h3><span class="tl-date">2024.06 - 2025.07</span></div>
+        <p class="tl-org">杭州钱江制冷压缩机集团有限公司 · 产品研发室</p>
+        <ul class="tl-list">
+          <li>参与现有电机系列改进优化，如电机参数优化设计等；</li>
+          <li>负责新品电机相关图文导入，编制电机产品图纸等相关文件；</li>
+          <li>负责完成新品电机试制及跟踪；</li>
+          <li>协助部门完成新产品试样等辅助工作，如铁芯拼接、变频电机生产试样等。</li>
+        </ul>
       </div>
     </div>
   </div>
 </section>
 
-<!-- ======= 项目 ======= -->
-<section class="section section-alt" id="projects">
+<!-- ======= 项目（可折叠 · 默认收起） ======= -->
+<section class="section" id="projects">
   <div class="container">
-    <div class="section-head reveal">
-      <span class="section-tag">PROJECTS</span>
-      <h2>项目经历</h2>
-      <p class="section-sub">在团队项目中承担核心功能开发</p>
+    <div class="section-head sec-head-flex reveal">
+      <div>
+        <div class="sec-label">04. 项目</div>
+        <h2 class="sec-title">Projects</h2>
+        <p class="sec-sub">在团队项目中承担核心功能开发，持续维护中</p>
+      </div>
+      <span class="sec-note">// 点击条目展开详情</span>
     </div>
     <div class="projects-list reveal">
-      <!-- 新增项目：复制下面整个 <article> 并修改内容，再把 id（project-1）改成不重复的数字即可 -->
       <article class="project-item">
         <button type="button" class="project-toggle" aria-expanded="false" aria-controls="project-1">
-          <span class="project-toggle-title">
-            <h3>图书商城系统</h3>
-            <p class="project-sub">基于 SSM 框架的前后台电商系统 · 团队项目</p>
-          </span>
-          <span class="project-toggle-side">
-            <span class="tl-date">2023.07 - 2023.08</span>
-            <span class="project-arrow" aria-hidden="true">▾</span>
-          </span>
+          <span class="project-toggle-title"><h3>图书商城系统</h3><p class="project-sub">基于 SSM 框架的前后台电商系统 · 团队项目</p></span>
+          <span class="project-toggle-side"><span class="tl-date">2023.07 - 2023.08</span><span class="project-arrow" aria-hidden="true">▾</span></span>
         </button>
         <div class="project-details" id="project-1">
           <div class="project-details-inner">
             <div class="project-details-content">
               <div class="project-meta">
-                <div class="meta-block">
-                  <h4>系统介绍</h4>
-                  <p>基于 SSM 框架搭建、由前台和后台系统组成的图书商城。后台包含类目管理、商品管理、订单管理等模块；前台包含首页展示、商品购买、购物车等功能。</p>
-                </div>
-                <div class="meta-block">
-                  <h4>我完成的功能</h4>
-                  <p>后台管理员用户的注册、登录、退出、用户管理、留言管理等功能；前台用户登录注册与验证、购物车使用、商品收藏、订单管理等功能。</p>
-                </div>
-                <div class="meta-block">
-                  <h4>项目协作</h4>
-                  <p>根据 5 位组员的擅长技能与特质合理分工，制定项目计划时间表，定期召开项目进度会交流重点、同步进度，最终超前、高质量完成项目。</p>
-                </div>
+                <div class="meta-block"><h4>系统介绍</h4><p>基于 SSM 框架搭建、由前台和后台系统组成的图书商城。后台包含类目管理、商品管理、订单管理等模块；前台包含首页展示、商品购买、购物车等功能。</p></div>
+                <div class="meta-block"><h4>我完成的功能</h4><p>后台管理员用户的注册、登录、退出、用户管理、留言管理等功能；前台用户登录注册与验证、购物车使用、商品收藏、订单管理等功能。</p></div>
+                <div class="meta-block"><h4>项目协作</h4><p>根据 5 位组员的擅长技能与特质合理分工，制定项目计划时间表，定期召开项目进度会交流重点、同步进度，最终超前、高质量完成项目。</p></div>
               </div>
-              <div class="project-tags">
-                <span class="tag tag-solid">SSM</span>
-                <span class="tag tag-solid">JSON</span>
-                <span class="tag tag-solid">JSP</span>
-                <span class="tag tag-solid">AJAX</span>
-                <span class="tag tag-solid">Bootstrap</span>
-                <span class="tag tag-solid">Java</span>
-                <span class="tag tag-solid">MySQL</span>
-                <span class="tag tag-solid">Tomcat 8.5</span>
-                <span class="tag tag-solid">Maven</span>
-                <span class="tag tag-solid">IDEA / JDK 9 / Navicat</span>
-              </div>
+              <div class="project-tags"><span class="tag tag-solid">SSM</span><span class="tag tag-solid">JSON</span><span class="tag tag-solid">JSP</span><span class="tag tag-solid">AJAX</span><span class="tag tag-solid">Bootstrap</span><span class="tag tag-solid">Java</span><span class="tag tag-solid">MySQL</span><span class="tag tag-solid">Tomcat 8.5</span><span class="tag tag-solid">Maven</span><span class="tag tag-solid">IDEA / JDK 9 / Navicat</span></div>
             </div>
           </div>
         </div>
       </article>
       <article class="project-item">
         <button type="button" class="project-toggle" aria-expanded="false" aria-controls="project-2">
-          <span class="project-toggle-title">
-            <h3>模组开发</h3>
-            <p class="project-sub">泰拉瑞亚 tModLoader 模组 · 鸿蒙方舟（Ark of the Cosmos）</p>
-          </span>
-          <span class="project-toggle-side">
-            <span class="tl-date">2026.08</span>
-            <span class="project-arrow" aria-hidden="true">▾</span>
-          </span>
+          <span class="project-toggle-title"><h3>模组开发</h3><p class="project-sub">泰拉瑞亚 tModLoader 模组 · 鸿蒙方舟（Ark of the Cosmos）</p></span>
+          <span class="project-toggle-side"><span class="tl-date">2026.08</span><span class="project-arrow" aria-hidden="true">▾</span></span>
         </button>
         <div class="project-details" id="project-2">
           <div class="project-details-inner">
             <div class="project-details-content">
               <div class="project-meta">
-                <div class="meta-block">
-                  <h4>项目介绍</h4>
-                  <p>基于 tModLoader 0.11 / Terraria 1.3.5.3 的模组项目，复刻灾厄 Calamity 经典旧版「鸿蒙方舟」武器：挥砍发射可穿墙的彩色剑气与追踪的鸿蒙之星，命中敌人按所在生物群系获得增益。</p>
-                </div>
-                <div class="meta-block">
-                  <h4>技术要点</h4>
-                  <p>C# 模组开发、tModLoader 0.11、弹幕与增益系统、与 CalamityMod 1.5.1.6 兼容；编译好的 tmod 文件可直接安装使用。</p>
-                </div>
-                <div class="meta-block">
-                  <h4>下载与源码</h4>
-                  <p>已编译模组（v2.0）已放在本站，点击即可下载。</p>
-                  <div class="project-links">
-                    <a class="btn btn-primary btn-sm" href="downloads/HongmengArk_v2.0.tmod" download>⬇ 下载模组</a>
-                    <a class="btn btn-outline btn-sm" href="https://github.com/zongmr3-coder/trmod-HM" target="_blank" rel="noopener">查看源码</a>
-                  </div>
-                </div>
+                <div class="meta-block"><h4>项目介绍</h4><p>基于 tModLoader 与 C# 开发的泰拉瑞亚大型模组，复刻自灾厄（Calamity）经典设定，加入独立合成的武器、装备与道具体系，提供完整的模组体验。</p></div>
+                <div class="meta-block"><h4>技术栈</h4><p>tModLoader 0.11 · Terraria 1.3.5.3 · C# · CalamityMod，通过 GitHub 管理源码并持续迭代更新。</p></div>
+                <div class="meta-block"><h4>当前进度</h4><p>已完成 2.0 版本核心内容，提供可直接安装的模组文件（.tmod），点击下方按钮下载体验。</p></div>
               </div>
-              <div class="project-tags">
-                <span class="tag tag-solid">C#</span>
-                <span class="tag tag-solid">tModLoader</span>
-                <span class="tag tag-solid">Terraria</span>
-                <span class="tag tag-solid">CalamityMod</span>
-                <span class="tag tag-solid">GitHub</span>
+              <div class="project-tags"><span class="tag tag-solid">C#</span><span class="tag tag-solid">tModLoader</span><span class="tag tag-solid">Terraria</span><span class="tag tag-solid">CalamityMod</span><span class="tag tag-solid">GitHub</span></div>
+              <div class="project-links">
+                <a class="btn btn-sm btn-solid" href="downloads/HongmengArk_v2.0.tmod" download>⬇ 下载模组 v2.0</a>
+                <a class="btn btn-sm btn-outline" href="https://github.com/zongmr3-coder/trmod-HM" target="_blank" rel="noopener">查看源码</a>
               </div>
             </div>
           </div>
@@ -300,60 +190,35 @@
       </article>
     </div>
   </div>
-</section>
-
-<!-- ======= 荣誉与证书 ======= -->
+</section><!-- ======= 荣誉与证书 ======= -->
 <section class="section" id="awards">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">AWARDS</span>
-      <h2>荣誉与证书</h2>
-      <p class="section-sub">奖项、语言能力与校园实践</p>
+      <div class="sec-label">05. 荣誉</div>
+      <h2 class="sec-title">Awards</h2>
+      <p class="sec-sub">奖项、语言能力与校园实践</p>
     </div>
     <div class="awards-grid">
-      <div class="award-card reveal">
-        <div class="award-ico">🏆</div>
-        <h3>校级三等奖学金</h3>
-        <p>在校期间学习成绩良好，获得校级奖学金。</p>
-      </div>
-      <div class="award-card reveal">
-        <div class="award-ico">🏁</div>
-        <h3>ROBOCOM 智能车竞赛</h3>
-        <p>浙江省三等奖，将自动控制与编程实践结合。</p>
-      </div>
-      <div class="award-card reveal">
-        <div class="award-ico">🌟</div>
-        <h3>社会实践优秀个人</h3>
-        <p>积极参与社会实践，获评社会实践优秀个人。</p>
-      </div>
-      <div class="award-card reveal">
-        <div class="award-ico">📖</div>
-        <h3>英语 CET-4</h3>
-        <p>485 分，能够熟练阅读英文资料。</p>
-      </div>
-      <div class="award-card reveal">
-        <div class="award-ico">🎭</div>
-        <h3>心理协会干部</h3>
-        <p>担任心理协会干部，负责协会的宣传与组织活动。</p>
-      </div>
+      <div class="award-card reveal"><div class="award-ico">🏆</div><h3>校级三等奖学金</h3><p>在校期间学习成绩良好，获得校级奖学金。</p></div>
+      <div class="award-card reveal"><div class="award-ico">🏁</div><h3>ROBOCOM 智能车竞赛</h3><p>浙江省三等奖，将自动控制与编程实践结合。</p></div>
+      <div class="award-card reveal"><div class="award-ico">🌟</div><h3>社会实践优秀个人</h3><p>积极参与社会实践，获评社会实践优秀个人。</p></div>
+      <div class="award-card reveal"><div class="award-ico">📖</div><h3>英语 CET-4</h3><p>485 分，能够熟练阅读英文资料。</p></div>
+      <div class="award-card reveal"><div class="award-ico">🎭</div><h3>心理协会干部</h3><p>担任心理协会干部，负责协会的宣传与组织活动。</p></div>
     </div>
   </div>
 </section>
 
 <!-- ======= 留言板 ======= -->
-<section class="section section-alt" id="guestbook">
+<section class="section" id="guestbook">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">GUESTBOOK</span>
-      <h2>留言板</h2>
-      <p class="section-sub">每一位访客都可以在这里留下足迹</p>
+      <div class="sec-label">06. 留言</div>
+      <h2 class="sec-title">Guestbook</h2>
+      <p class="sec-sub">每一位访客都可以在这里留下足迹</p>
     </div>
     <div class="guestbook-wrap reveal">
-      <form class="gb-form" id="guestbookForm" novalidate>
-        <div class="gb-form-head">
-          <h3>📝 写下留言</h3>
-          
-        </div>
+      <form class="gb-card" id="guestbookForm" novalidate>
+        <h3>$ 写下留言</h3>
         <div class="form-field">
           <label for="gbName">昵称 <em>*</em></label>
           <input type="text" id="gbName" name="name" maxlength="20" placeholder="怎么称呼你？" autocomplete="nickname" required>
@@ -370,9 +235,9 @@
         <button type="submit" class="btn btn-primary gb-submit" id="gbSubmit">发布留言</button>
         <p class="form-tip" id="gbTip">留言会实时展示在下方列表。</p>
       </form>
-      <div class="gb-list">
+      <div class="gb-card">
         <div class="gb-list-head">
-          <h3>💬 大家的留言</h3>
+          <h3># 大家的留言</h3>
           <span class="gb-total" id="gbTotal">共 0 条</span>
         </div>
         <div class="gb-messages" id="gbMessages" aria-live="polite"></div>
@@ -380,34 +245,26 @@
     </div>
   </div>
 </section>
+
 <!-- ======= 联系 ======= -->
-<section class="section section-contact" id="contact">
+<section class="section" id="contact">
   <div class="container">
     <div class="section-head reveal">
-      <span class="section-tag">CONTACT</span>
-      <h2>联系我</h2>
-      <p class="section-sub">期待一次对话，或一份新的挑战</p>
+      <div class="sec-label">07. 联系</div>
+      <h2 class="sec-title">Contact</h2>
+      <p class="sec-sub">期待一次对话，或一份新的挑战</p>
     </div>
     <div class="contact-grid reveal">
-      <a class="contact-card" href="tel:17858831484">
-        <div class="contact-ico">📞</div>
-        <h3>电话</h3>
-        <p>17858831484</p>
-      </a>
-      <a class="contact-card" href="mailto:zongmr3@gmail.com">
-        <div class="contact-ico">✉️</div>
-        <h3>邮箱</h3>
-        <p>zongmr3@gmail.com</p>
-      </a>
+      <a class="contact-card" href="tel:17858831484"><div class="contact-ico">📞</div><div><h3>电话</h3><p>17858831484</p></div></a>
+      <a class="contact-card" href="mailto:zongmr3@gmail.com"><div class="contact-ico">✉️</div><div><h3>邮箱</h3><p>zongmr3@gmail.com</p></div></a>
     </div>
   </div>
 </section>
 </main>
+</div>
 
 <footer class="site-footer">
-  <div class="container">
-    <p>© <span id="year">2026</span> 仲子龙 · 用心做每一件事</p>
-  </div>
+  <div class="container"><p>© <span id="year">2026</span> 仲子龙 · 用心做每一件事</p></div>
 </footer>
 
 <button class="to-top" id="toTop" aria-label="回到顶部">↑</button>

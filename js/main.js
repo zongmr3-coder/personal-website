@@ -1,44 +1,22 @@
 /* ============================================================
-   仲子龙 · 个人主页 交互脚本
+   仲子龙 · 个人主页 交互脚本（方向B · 暗色开发者）
    ============================================================ */
 (function () {
   "use strict";
 
-  var header = document.getElementById("siteHeader");
-  var navToggle = document.getElementById("navToggle");
-  var mainNav = document.getElementById("mainNav");
   var toTop = document.getElementById("toTop");
   var typedEl = document.getElementById("typedText");
 
-  /* ---------- 导航栏滚动状态 ---------- */
+  /* ---------- 滚动状态 ---------- */
   function onScroll() {
-    if (header) header.classList.toggle("scrolled", window.scrollY > 40);
     if (toTop) toTop.classList.toggle("show", window.scrollY > 500);
     highlightNav();
   }
   window.addEventListener("scroll", onScroll, { passive: true });
 
-  /* ---------- 移动端菜单 ---------- */
-  function closeMenu() {
-    if (!mainNav || !navToggle) return;
-    mainNav.classList.remove("open");
-    navToggle.classList.remove("open");
-    navToggle.setAttribute("aria-expanded", "false");
-  }
-  if (navToggle && mainNav) {
-    navToggle.addEventListener("click", function () {
-      var open = mainNav.classList.toggle("open");
-      navToggle.classList.toggle("open", open);
-      navToggle.setAttribute("aria-expanded", String(open));
-    });
-    mainNav.addEventListener("click", function (e) {
-      if (e.target.tagName === "A") closeMenu();
-    });
-  }
-
   /* ---------- 高亮当前区块 ---------- */
   var sections = document.querySelectorAll("section[id]");
-  var navLinks = document.querySelectorAll(".nav-link");
+  var navLinks = document.querySelectorAll(".sb-link");
   function highlightNav() {
     var pos = window.scrollY + 120;
     var currentId = "";
@@ -84,7 +62,7 @@
     revealEls.forEach(function (el) { el.classList.add("visible"); });
   }
 
-  /* ---------- 项目折叠展开 ---------- */
+  /* ---------- 项目折叠展开（默认收起） ---------- */
   var projectsList = document.querySelector(".projects-list");
   if (projectsList) {
     projectsList.addEventListener("click", function (e) {
