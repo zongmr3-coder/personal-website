@@ -22,6 +22,7 @@
       <a href="#experience" class="nav-link">经历</a>
       <a href="#projects" class="nav-link">项目</a>
       <a href="#awards" class="nav-link">荣誉</a>
+      <a href="#guestbook" class="nav-link">留言</a>
       <a href="#contact" class="nav-link">联系</a>
     </nav>
     <button class="nav-toggle" id="navToggle" aria-label="打开菜单" aria-expanded="false">
@@ -284,6 +285,46 @@
   </div>
 </section>
 
+<!-- ======= 留言板 ======= -->
+<section class="section section-alt" id="guestbook">
+  <div class="container">
+    <div class="section-head reveal">
+      <span class="section-tag">GUESTBOOK</span>
+      <h2>留言板</h2>
+      <p class="section-sub">每一位访客都可以在这里留下足迹</p>
+    </div>
+    <div class="guestbook-wrap reveal">
+      <form class="gb-form" id="guestbookForm" novalidate>
+        <div class="gb-form-head">
+          <h3>📝 写下留言</h3>
+          <span class="gb-form-badge" id="gbModeBadge">加载中…</span>
+        </div>
+        <div class="form-field">
+          <label for="gbName">昵称 <em>*</em></label>
+          <input type="text" id="gbName" name="name" maxlength="20" placeholder="怎么称呼你？" autocomplete="nickname" required>
+        </div>
+        <div class="form-field">
+          <label for="gbContent">留言内容 <em>*</em></label>
+          <textarea id="gbContent" name="content" rows="4" maxlength="500" placeholder="想说点什么…" required></textarea>
+          <span class="form-count"><b id="gbCount">0</b>/500</span>
+        </div>
+        <div class="form-field">
+          <label for="gbEmail">邮箱 <i>（选填，方便我回复你）</i></label>
+          <input type="email" id="gbEmail" name="email" maxlength="60" placeholder="example@mail.com" autocomplete="email">
+        </div>
+        <button type="submit" class="btn btn-primary gb-submit" id="gbSubmit">发布留言</button>
+        <p class="form-tip" id="gbTip">留言会实时展示在下方列表。</p>
+      </form>
+      <div class="gb-list">
+        <div class="gb-list-head">
+          <h3>💬 大家的留言</h3>
+          <span class="gb-total" id="gbTotal">共 0 条</span>
+        </div>
+        <div class="gb-messages" id="gbMessages" aria-live="polite"></div>
+      </div>
+    </div>
+  </div>
+</section>
 <!-- ======= 联系 ======= -->
 <section class="section section-contact" id="contact">
   <div class="container">
@@ -316,7 +357,9 @@
 
 <button class="to-top" id="toTop" aria-label="回到顶部">↑</button>
 
+<script src="js/config.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="js/guestbook.js"></script>
 <script src="js/main.js"></script>
 </body>
 </html>
-

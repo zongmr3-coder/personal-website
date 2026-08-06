@@ -224,6 +224,49 @@ a.chip:hover { background: rgba(255, 255, 255, .2); border-color: #60a5fa; trans
 .contact-card h3 { margin: 10px 0 4px; color: #93c5fd; font-size: 1rem; }
 .contact-card p { font-size: 1.05rem; word-break: break-all; }
 
+/* ---------- 留言板 ---------- */
+.guestbook-wrap { display: grid; grid-template-columns: 380px 1fr; gap: 26px; align-items: start; }
+.gb-form, .gb-list {
+  background: var(--card); border: 1px solid var(--line); border-radius: var(--radius);
+  box-shadow: var(--shadow); padding: 30px;
+}
+.gb-form-head, .gb-list-head { display: flex; align-items: center; justify-content: space-between; gap: 12px; margin-bottom: 22px; flex-wrap: wrap; }
+.gb-form-head h3, .gb-list-head h3 { font-size: 1.15rem; }
+.gb-form-badge { font-size: .75rem; padding: 4px 12px; border-radius: 999px; background: #eef3fc; color: #33508f; border: 1px solid #dfe9fb; white-space: nowrap; }
+.gb-form-badge.online { background: #ecfdf5; color: #047857; border-color: #a7f3d0; }
+.form-field { margin-bottom: 16px; }
+.form-field label { display: block; font-size: .9rem; font-weight: 600; margin-bottom: 6px; color: var(--ink); }
+.form-field label em { color: #dc2626; font-style: normal; }
+.form-field label i { color: var(--ink-soft); font-weight: 400; font-style: normal; }
+.form-field input, .form-field textarea {
+  width: 100%; padding: 11px 14px; border: 1px solid var(--line); border-radius: 10px;
+  font: inherit; font-size: .95rem; color: var(--ink); background: #fbfdff; resize: vertical;
+  transition: border-color .25s, box-shadow .25s, background .25s;
+}
+.form-field input:focus, .form-field textarea:focus { outline: none; border-color: var(--blue-500); box-shadow: 0 0 0 3px rgba(59, 130, 246, .15); background: #fff; }
+.form-field textarea { min-height: 112px; }
+.form-field input.invalid, .form-field textarea.invalid { border-color: #dc2626; box-shadow: 0 0 0 3px rgba(220, 38, 38, .12); }
+.form-count { display: block; text-align: right; font-size: .78rem; color: var(--ink-soft); margin-top: 4px; }
+.form-count b { color: var(--blue-600); }
+.gb-submit { width: 100%; border: 0; font: inherit; }
+.gb-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+.form-tip { margin-top: 12px; font-size: .82rem; color: var(--ink-soft); text-align: center; transition: color .25s; }
+.form-tip.error { color: #dc2626; }
+.form-tip.ok { color: #047857; }
+.gb-messages { display: flex; flex-direction: column; gap: 16px; min-height: 120px; }
+.gb-state { text-align: center; color: var(--ink-soft); font-size: .92rem; padding: 44px 0; }
+.gb-msg { display: flex; gap: 14px; background: #f7faff; border: 1px solid var(--line); border-radius: 14px; padding: 16px 18px; transition: transform .25s, box-shadow .25s; }
+.gb-msg:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+.gb-avatar {
+  flex: none; width: 42px; height: 42px; border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(140deg, var(--blue-500), var(--navy-700)); color: #fff; font-weight: 700; font-size: 1.05rem;
+}
+.gb-msg-body { flex: 1; min-width: 0; }
+.gb-msg-meta { display: flex; align-items: baseline; gap: 10px; flex-wrap: wrap; }
+.gb-name { font-weight: 700; font-size: .95rem; }
+.gb-time { font-size: .78rem; color: var(--ink-soft); }
+.gb-text { margin-top: 6px; font-size: .95rem; color: var(--ink); word-break: break-word; white-space: pre-wrap; }
+.gb-total { font-size: .85rem; color: var(--blue-600); font-weight: 600; background: var(--blue-100); padding: 4px 12px; border-radius: 999px; white-space: nowrap; }
 /* ---------- 页脚 ---------- */
 .site-footer { background: #081120; color: rgba(255, 255, 255, .55); text-align: center; padding: 26px 0; font-size: .9rem; }
 
@@ -243,6 +286,7 @@ html.js .reveal.visible { opacity: 1; transform: none; }
 
 /* ---------- 响应式 ---------- */
 @media (max-width: 960px) {
+  .guestbook-wrap { grid-template-columns: 1fr; }
   .about-grid, .skills-grid, .awards-grid { grid-template-columns: repeat(2, 1fr); }
   .project-meta { grid-template-columns: 1fr; }
   .stat-bar { grid-template-columns: repeat(2, 1fr); }
