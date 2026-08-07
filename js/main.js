@@ -95,6 +95,35 @@
     } catch (e) {}
   }
 
+  /* ---------- 移动端顶部导航：默认折叠 + 状态冻结 ---------- */
+  var sbToggle = document.getElementById("sbToggle");
+  if (sbToggle) {
+    var HAM_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg>';
+    var X_ICON = '<svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg>';
+    function applyMobileNav(open) {
+      document.body.classList.toggle("sb-mobile-open", open);
+      sbToggle.innerHTML = open ? X_ICON : HAM_ICON;
+      sbToggle.setAttribute("aria-expanded", String(open));
+      sbToggle.setAttribute("aria-label", open ? "收起导航" : "展开导航");
+    }
+    sbToggle.addEventListener("click", function () {
+      var open = !document.body.classList.contains("sb-mobile-open");
+      applyMobileNav(open);
+      try { localStorage.setItem("mobile_nav_open", open ? "1" : "0"); } catch (e) {}
+    });
+    navLinks.forEach(function (link) {
+      link.addEventListener("click", function () {
+        if (document.body.classList.contains("sb-mobile-open")) {
+          applyMobileNav(false);
+          try { localStorage.setItem("mobile_nav_open", "0"); } catch (e) {}
+        }
+      });
+    });
+    var savedMobile;
+    try { savedMobile = localStorage.getItem("mobile_nav_open"); } catch (e) {}
+    if (savedMobile === "1") applyMobileNav(true);
+  }
+
   /* ---------- 回到顶部 ---------- */
   if (toTop) {
     toTop.addEventListener("click", function () {

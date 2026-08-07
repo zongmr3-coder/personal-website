@@ -210,10 +210,16 @@ a.meta-chip:hover{border-color:var(--accent);color:var(--accent)}
 .reveal.visible{opacity:1;transform:none}
 
 /* ---------- 响应式 ---------- */
+.sb-toggle{display:none}
 @media (max-width:1000px){
-  .sidebar{position:static;width:100%;flex-direction:row;align-items:center;padding:18px 22px;border-right:0;border-bottom:1px solid var(--bg-line);gap:14px}
-  .sb-brand{display:none}
-  .sb-nav{margin-top:0;flex-direction:row;gap:8px;flex-wrap:wrap}
+  .sidebar{position:sticky;top:0;width:100%;flex-direction:row;flex-wrap:wrap;align-items:center;padding:14px 18px;border-right:0;border-bottom:1px solid var(--bg-line);gap:10px 16px}
+  .sb-toggle{display:inline-flex;align-items:center;justify-content:center;margin-left:auto;width:38px;height:38px;border-radius:8px;border:1px solid var(--bg-line);background:var(--bg-card);color:var(--accent);cursor:pointer;transition:background .25s,color .25s}
+  .sb-toggle:hover{background:var(--accent);color:#0A192F}
+  .sidebar>div{display:flex;flex-wrap:wrap;align-items:center;gap:4px 14px;flex:1;min-width:0}
+  .sb-brand{display:block;font-size:1.02rem;white-space:nowrap}
+  .sb-name,.sb-role{display:none}
+  .sb-nav{display:none;flex-direction:row;flex-wrap:wrap;flex-basis:100%;margin-top:12px}
+  body.sb-mobile-open .sb-nav{display:flex}
   .sb-foot{display:none}
   .main{margin-left:0}
   .hero{min-height:auto;padding:80px 0}
@@ -243,3 +249,15 @@ body.sb-collapsed .main{margin-left:86px}
 /* ---------- 星海背景：闪烁星星 + 鼠标推开（方向A升级） ---------- */
 .star-bg{position:fixed;inset:0;z-index:1;pointer-events:none}
 .main{position:relative;z-index:2}
+
+/* ---------- 移动端：折叠状态覆盖（冻结） ---------- */
+@media (max-width:1000px){
+  html{scroll-padding-top:84px}
+  body.sb-collapsed .sidebar{width:100%}
+  body.sb-collapsed .sb-brand{display:block}
+  body.sb-collapsed .sb-name,body.sb-collapsed .sb-role{display:none}
+  body.sb-collapsed .sb-nav{margin-top:12px;align-items:flex-start}
+  body.sb-collapsed .sb-link{justify-content:flex-start;padding:8px 12px}
+  body.sb-collapsed .sb-txt{display:inline}
+  body.sb-collapsed .main{margin-left:0}
+}
