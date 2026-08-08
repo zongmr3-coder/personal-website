@@ -85,6 +85,7 @@ a.meta-chip:hover{border-color:var(--accent);color:var(--accent)}
 .stat-bar{margin-top:44px;display:grid;grid-template-columns:repeat(4,1fr);gap:16px}
 .stat{background:var(--bg-card);border:1px solid var(--bg-line);border-radius:10px;padding:20px;text-align:center}
 .stat strong{display:block;font-family:var(--mono);font-size:1.7rem;color:var(--accent);font-weight:500}
+.stat strong.stat-inf{font-size:2.8rem;line-height:1}
 .stat span{color:var(--ink-soft);font-size:.85rem}
 
 /* ---------- 技能 ---------- */
