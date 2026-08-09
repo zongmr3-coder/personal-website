@@ -9,7 +9,12 @@
 
   /* ---------- 滚动状态 ---------- */
   function onScroll() {
-    if (toTop) toTop.classList.toggle("show", window.scrollY > 500);
+    if (toTop) {
+      toTop.classList.toggle("show", window.scrollY > 500);
+      var max = document.documentElement.scrollHeight - window.innerHeight;
+      var pct = max > 0 ? Math.min(100, Math.round((window.scrollY / max) * 100)) : 0;
+      document.documentElement.style.setProperty("--progress", pct + "%");
+    }
     highlightNav();
   }
   window.addEventListener("scroll", onScroll, { passive: true });
