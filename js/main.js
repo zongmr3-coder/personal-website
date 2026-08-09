@@ -48,7 +48,9 @@
 
   /* ---------- 滚动入场动画 ---------- */
   var revealEls = document.querySelectorAll(".reveal");
-  if ("IntersectionObserver" in window) {
+  var prefersReduced =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  if (!prefersReduced && "IntersectionObserver" in window) {
     var io = new IntersectionObserver(function (entries) {
       entries.forEach(function (entry) {
         if (entry.isIntersecting) {
@@ -56,7 +58,7 @@
           io.unobserve(entry.target);
         }
       });
-    }, { threshold: 0.12 });
+    }, { threshold: 0.12, rootMargin: "0px 0px -6% 0px" });
     revealEls.forEach(function (el) { io.observe(el); });
   } else {
     revealEls.forEach(function (el) { el.classList.add("visible"); });
@@ -124,6 +126,20 @@
     if (savedMobile === "1") applyMobileNav(true);
   }
 
+  /* ---------- 侧栏锚点兜底：确保导航点击一定能定位目标 ---------- */
+  navLinks.forEach(function (link) {
+    link.addEventListener("click", function (e) {
+      var href = link.getAttribute("href");
+      if (!href || href.charAt(0) !== "#") return;
+      var target = document.getElementById(href.slice(1));
+      if (!target) return;
+      e.preventDefault();
+      var y = target.getBoundingClientRect().top + (window.scrollY || window.pageYOffset) - 30;
+      window.scrollTo({ top: Math.max(0, y), behavior: "smooth" });
+      try { history.replaceState(null, "", href); } catch (err) {}
+    });
+  });
+
   /* ---------- 回到顶部 ---------- */
   if (toTop) {
     toTop.addEventListener("click", function () {
@@ -139,92 +155,258 @@
 })();
 
 
-/* ---------- 星海背景：闪烁星星 + 鼠标推开 + 滚动视差 ---------- */
+/* ---------- 星海背景 v5：视口固定画布 + 文档坐标星星（严格参考「方向A-深空星海」）
+   画布由 CSS 固定铺满整个视口（尺寸与视口永远一致，不会出现排版/覆盖问题）；
+   星星与流星使用整页文档坐标生成与推进，绘制时按当前滚动偏移换算，
+   因此无论页面多长、滚动到哪，星空背景始终完整铺满、跟随页面滚动。 */
 (function () {
   "use strict";
+
+  var prefersReduced =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+
   var canvas = document.createElement("canvas");
   canvas.className = "star-bg";
   canvas.setAttribute("aria-hidden", "true");
-  document.body.insertBefore(canvas, document.body.firstChild);
+  document.body.appendChild(canvas);
   var ctx = canvas.getContext("2d");
-  var stars = [], W = 0, H = 0, DOC_H = 0;
-  var PUSH_R = 150, PUSH_MAX = 30, DENSITY = 4300, MAX_STARS = 2200;
-  var lastRebalance = 0;
 
-  function docH() {
-    return Math.max(document.documentElement.scrollHeight, document.body ? document.body.scrollHeight : 0, window.innerHeight);
-  }
+  var W = 0, VW = 0, VH = 0, docH = 0, DPR = 1;
+  var scrollX = 0, scrollY = 0, lastCX = -9999, lastCY = -9999;
+  var stars = [], meteors = [];
+  var running = true, nextMeteorAt = 2.5;
+  var mouse = { x: -9999, y: -9999 };
+
+  function rand(min, max) { return min + Math.random() * (max - min); }
+
+  /* 每屏约 130 颗（在之前基础上再减少约三成），整页按屏数换算，上限 4000 */
   function targetCount() {
-    return Math.min(MAX_STARS, Math.round((W * docH()) / DENSITY));
+    var perScreen = Math.round((W * VH) / 7000);
+    var screens = Math.max(1, Math.ceil(docH / VH));
+    return Math.min(4000, Math.max(100, perScreen * screens));
   }
+
+  /* ---- 参考版星星结构：整页文档坐标 ---- */
   function makeStar() {
-    var big = Math.random() < 0.1;
     return {
-      ox: Math.random() * W,
-      oy: Math.random() * docH(),
-      depth: Math.random() * 0.55 + 0.45,
-      r: big ? (Math.random() * 0.9 + 1.5) : (Math.random() * 0.9 + 0.5),
-      base: Math.random() * Math.PI * 2,
-      speed: Math.random() * 1.4 + 0.5,
-      color: big ? "#64FFDA" : (Math.random() < 0.85 ? "#EAF6FF" : "#B9CFFF"),
-      cx: 0, cy: 0
+      x: Math.random() * W,
+      y: Math.random() * docH,
+      r: Math.random() * 1.4 + 0.3,
+      tw: Math.random() * Math.PI * 2,
+      sp: 0.008 + Math.random() * 0.02,
+      vy: 0.02 + Math.random() * 0.06
     };
   }
+
   function buildStars() {
     var n = targetCount();
     stars = [];
     for (var i = 0; i < n; i++) stars.push(makeStar());
   }
+
+  function syncScroll() {
+    scrollX = window.scrollX || 0;
+    scrollY = window.scrollY || 0;
+    if (lastCX > -9000) { mouse.x = lastCX + scrollX; mouse.y = lastCY + scrollY; }
+  }
+
+  function syncDocHeight() {
+    var h = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+      VH
+    );
+    if (h === docH) return;
+    docH = h;
+    /* 文档变长只补星、变短则重建，保证整页密度一致 */
+    var n = targetCount();
+    if (stars.length < n) {
+      while (stars.length < n) stars.push(makeStar());
+    } else if (stars.length > n) {
+      stars.length = n;
+    }
+  }
+
   function resize() {
-    W = canvas.width = window.innerWidth;
-    H = canvas.height = window.innerHeight;
+    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    W = canvas.clientWidth || window.innerWidth;
+    VW = document.documentElement.clientWidth || window.innerWidth;
+    VH = document.documentElement.clientHeight || window.innerHeight;
+    docH = Math.max(
+      document.documentElement.scrollHeight,
+      document.body.scrollHeight,
+      VH
+    );
+    /* 缓冲 = 视口 × DPR；画布本身由 CSS 固定铺满视口 */
+    canvas.width = Math.round(W * DPR);
+    canvas.height = Math.round(VH * DPR);
+    ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    syncScroll();
     buildStars();
   }
-  function rebalance() {
-    var d = docH();
-    if (d === DOC_H) return;
-    DOC_H = d;
-    var n = targetCount();
-    while (stars.length < n) stars.push(makeStar());
-    if (stars.length > n) stars.length = n;
+
+  function spawnMeteor() {
+    var vx = rand(5.5, 9), vy = rand(2.8, 4.6);
+    var x = scrollX + rand(VW * 0.05, VW * 0.6);
+    var y = scrollY + rand(VH * 0.02, VH * 0.28);
+    meteors.push({
+      x: x, y: y, vx: vx, vy: vy,
+      life: 0, len: rand(90, 170),
+      appear: rand(32, 46)
+    });
   }
 
-  var tx = -9999, ty = -9999, smx = -9999, smy = -9999;
-  document.addEventListener("mousemove", function (e) { tx = e.clientX; ty = e.clientY; }, { passive: true });
-  document.addEventListener("mouseleave", function () { tx = -9999; ty = -9999; });
-  window.addEventListener("resize", resize);
-
-  function loop(t) {
-    var time = t / 1000;
-    if (t - lastRebalance > 400) { lastRebalance = t; rebalance(); }
-    smx += (tx - smx) * 0.14;
-    smy += (ty - smy) * 0.14;
-    var sc = window.scrollY || window.pageYOffset || 0;
-    ctx.clearRect(0, 0, W, H);
+  /* ---- 星星：闪烁 + 缓慢下落回卷 + 鼠标直接推开（同一文档坐标） ---- */
+  function drawStars() {
+    var ox = scrollX, oy = scrollY;
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
-      var vy = s.oy - sc * s.depth;
-      if (vy < -12 || vy > H + 12) continue;
-      var dx = s.ox - smx, dy = vy - smy;
-      var dist = Math.sqrt(dx * dx + dy * dy);
-      if (dist < PUSH_R && dist > 0.01) {
-        var k = 1 - dist / PUSH_R;
-        s.cx += ((dx / dist) * PUSH_MAX * k - s.cx) * 0.055;
-        s.cy += ((dy / dist) * PUSH_MAX * k - s.cy) * 0.055;
-      } else {
-        s.cx *= 0.95; s.cy *= 0.95;
+      s.y += s.vy;
+      if (s.y > docH + 4) { s.y = -4; s.x = Math.random() * W; }
+      s.tw += s.sp;
+      var dx = s.x - mouse.x, dy = s.y - mouse.y;
+      var d = Math.sqrt(dx * dx + dy * dy);
+      if (d < 120 && d > 0.001) {
+        var f = (120 - d) / 120;
+        s.x += (dx / d) * f * 1.0;
+        s.y += (dy / d) * f * 1.0;
       }
-      var tw = Math.sin(time * s.speed + s.base) * 0.5 + 0.5;
-      ctx.globalAlpha = 0.18 + tw * 0.75;
-      ctx.fillStyle = s.color;
+      /* 只绘制当前视口内的星星 */
+      if (s.y < oy - 6 || s.y > oy + VH + 6) continue;
+      if (s.x < ox - 6 || s.x > ox + W + 6) continue;
+      var a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw));
       ctx.beginPath();
-      ctx.arc(s.ox + s.cx, vy + s.cy, s.r, 0, Math.PI * 2);
+      ctx.arc(s.x - ox, s.y - oy, s.r, 0, Math.PI * 2);
+      ctx.fillStyle = "rgba(220,235,255," + a.toFixed(3) + ")";
+      ctx.fill();
+    }
+  }
+
+  /* ---- 流星：柔和淡入，完整飞出可视界面后自然消失 ---- */
+  function drawMeteors(time) {
+    if (time > nextMeteorAt && meteors.length < 3) {
+      spawnMeteor();
+      nextMeteorAt = time + 2.5 + Math.random() * 3.5;
+    }
+    for (var m = 0; m < meteors.length; m++) {
+      var mt = meteors[m];
+      mt.life++;
+      mt.x += mt.vx;
+      mt.y += mt.vy;
+      var inFade = mt.life < mt.appear ? mt.life / mt.appear : 1;
+      inFade = inFade * inFade * (3 - 2 * inFade);
+      var fade = inFade;
+      /* 保持完整亮度，整条流星（含拖尾末端）完全飞出可视界面后才移除 */
+      var tailEndX = mt.x - mt.vx * mt.len;
+      var tailEndY = mt.y - mt.vy * mt.len;
+      if (mt.life > 1500 || tailEndX > scrollX + VW + 20 || tailEndY > scrollY + VH + 20) {
+        meteors.splice(m, 1); m--; continue;
+      }
+      var px = mt.x - scrollX, py = mt.y - scrollY;
+      if (py < -120 || py > VH + 120) continue;
+      var curLen = mt.len * (0.45 + 0.55 * inFade);
+      var tailX = px - mt.vx * curLen, tailY = py - mt.vy * curLen;
+      var headA = (0.95 * fade).toFixed(3);
+      var glow = ctx.createLinearGradient(px, py, tailX, tailY);
+      glow.addColorStop(0, "rgba(150,205,255," + (0.4 * fade).toFixed(3) + ")");
+      glow.addColorStop(1, "rgba(150,205,255,0)");
+      ctx.globalAlpha = 1;
+      ctx.strokeStyle = glow;
+      ctx.lineWidth = 5;
+      ctx.lineCap = "round";
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+      var core = ctx.createLinearGradient(px, py, tailX, tailY);
+      core.addColorStop(0, "rgba(255,255,255," + headA + ")");
+      core.addColorStop(0.25, "rgba(200,235,255," + (0.55 * fade).toFixed(3) + ")");
+      core.addColorStop(1, "rgba(200,235,255,0)");
+      ctx.strokeStyle = core;
+      ctx.lineWidth = 1.6;
+      ctx.beginPath();
+      ctx.moveTo(px, py);
+      ctx.lineTo(tailX, tailY);
+      ctx.stroke();
+      var hg = ctx.createRadialGradient(px, py, 0, px, py, 8);
+      hg.addColorStop(0, "rgba(255,255,255," + headA + ")");
+      hg.addColorStop(0.4, "rgba(180,225,255," + (0.35 * fade).toFixed(3) + ")");
+      hg.addColorStop(1, "rgba(180,225,255,0)");
+      ctx.fillStyle = hg;
+      ctx.beginPath();
+      ctx.arc(px, py, 8, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+
+  function drawStatic() {
+    ctx.clearRect(0, 0, W, VH);
+    var ox = scrollX, oy = scrollY;
+    for (var i = 0; i < stars.length; i++) {
+      var s = stars[i];
+      if (s.y < oy - 6 || s.y > oy + VH + 6) continue;
+      ctx.globalAlpha = 0.8;
+      ctx.fillStyle = "rgba(220,235,255,0.8)";
+      ctx.beginPath();
+      ctx.arc(s.x - ox, s.y - oy, s.r, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.globalAlpha = 1;
-    requestAnimationFrame(loop);
   }
-  DOC_H = docH();
+
+  var frameCount = 0;
+  function frame(t) {
+    if (!running) return;
+    requestAnimationFrame(frame);
+    if ((frameCount++ % 30) === 0) syncDocHeight();
+    ctx.clearRect(0, 0, W, VH);
+    drawStars();
+    drawMeteors(t / 1000);
+
+    ctx.globalAlpha = 1;
+  }
+
+  function onVisibility() {
+    running = !document.hidden;
+    if (running) requestAnimationFrame(frame);
+  }
+
+  document.addEventListener("mousemove", function (e) {
+    lastCX = e.clientX; lastCY = e.clientY;
+    mouse.x = lastCX + scrollX; mouse.y = lastCY + scrollY;
+  }, { passive: true });
+  document.addEventListener("mouseleave", function () {
+    lastCX = -9999; lastCY = -9999;
+    mouse.x = -9999; mouse.y = -9999;
+  });
+  document.addEventListener("touchmove", function (e) {
+    if (e.touches && e.touches[0]) {
+      lastCX = e.touches[0].clientX; lastCY = e.touches[0].clientY;
+      mouse.x = lastCX + scrollX; mouse.y = lastCY + scrollY;
+    }
+  }, { passive: true });
+  document.addEventListener("touchend", function () {
+    lastCX = -9999; lastCY = -9999;
+    mouse.x = -9999; mouse.y = -9999;
+  });
+  window.addEventListener("resize", resize);
+  window.addEventListener("scroll", syncScroll, { passive: true });
+  window.addEventListener("load", function () { syncScroll(); syncDocHeight(); });
+  setTimeout(syncDocHeight, 800);
+  setTimeout(syncDocHeight, 2500);
+  if (typeof ResizeObserver === "function") {
+    try {
+      new ResizeObserver(function () { syncDocHeight(); }).observe(document.body);
+    } catch (e) {}
+  }
+  document.addEventListener("visibilitychange", onVisibility);
+
   resize();
-  requestAnimationFrame(loop);
+  if (prefersReduced) {
+    drawStatic();
+  } else {
+    requestAnimationFrame(frame);
+  }
+
+
 })();

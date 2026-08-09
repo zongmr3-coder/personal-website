@@ -14,6 +14,12 @@
 </head>
 <body>
 
+<!-- ====== 深空星海背景层：星云 / 极光 / 暗角 / 颗粒（方向A 深空星海） ====== -->
+<div class="space-bg" aria-hidden="true"></div>
+<div class="aurora" aria-hidden="true"></div>
+<div class="vignette" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
 <!-- ======= 左侧固定导航 ======= -->
 <aside class="sidebar" id="sidebar">
   <button type="button" class="sb-collapse" id="sbCollapse" aria-label="收起侧边栏" aria-expanded="true" title="收起/展开侧边栏"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M15 18l-6-6 6-6"/></svg></button>
@@ -46,13 +52,13 @@
   <div class="container hero-inner">
     <div class="hero-txt">
       <p class="hero-hi reveal">// 你好，我是</p>
-      <h1 class="hero-name reveal">仲子龙<span class="dot">.</span></h1>
+      <h1 class="hero-name reveal">仲子龙<span class="dot"></span></h1>
       <p class="hero-role reveal"><span class="typed-text" id="typedText"></span><span class="caret" aria-hidden="true"></span></p>
       <p class="hero-desc reveal">自动化专业 · 2024届本科毕业生 · 热衷钻研与创造的开发者</p>
       <div class="hero-meta reveal">
-        <a class="meta-chip" href="tel:17858831484">📞 17858831484</a>
-        <a class="meta-chip" href="mailto:zongmr3@gmail.com">✉️ zongmr3@gmail.com</a>
-        <span class="meta-chip">🎂 25岁</span>
+        <a class="meta-chip" href="tel:17858831484"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg>17858831484</a>
+        <a class="meta-chip" href="mailto:zongmr3@gmail.com"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg>zongmr3@gmail.com</a>
+        <span class="meta-chip"><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><polyline points="20 12 20 22 4 22 4 12"/><rect x="2" y="7" width="20" height="5"/><line x1="12" y1="7" x2="12" y2="22"/><path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"/><path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"/></svg>25岁</span>
       </div>
       <div class="hero-cta reveal">
         <a href="#contact" class="btn btn-primary">联系我</a>
@@ -163,7 +169,7 @@
       <article class="project-item">
         <button type="button" class="project-toggle" aria-expanded="false" aria-controls="project-1">
           <span class="project-toggle-title"><h3>图书商城系统</h3><p class="project-sub">基于 SSM 框架的前后台电商系统 · 团队项目</p></span>
-          <span class="project-toggle-side"><span class="tl-date">2023.07 - 2023.08</span><span class="project-arrow" aria-hidden="true">▾</span></span>
+          <span class="project-toggle-side"><span class="tl-date">2023.07 - 2023.08</span><span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></span>
         </button>
         <div class="project-details" id="project-1">
           <div class="project-details-inner">
@@ -181,7 +187,7 @@
       <article class="project-item">
         <button type="button" class="project-toggle" aria-expanded="false" aria-controls="project-2">
           <span class="project-toggle-title"><h3>模组开发</h3><p class="project-sub">泰拉瑞亚 tModLoader 模组 · 鸿蒙方舟（Ark of the Cosmos）</p></span>
-          <span class="project-toggle-side"><span class="tl-date">2026.08</span><span class="project-arrow" aria-hidden="true">▾</span></span>
+          <span class="project-toggle-side"><span class="tl-date">2026.08</span><span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></span>
         </button>
         <div class="project-details" id="project-2">
           <div class="project-details-inner">
@@ -193,7 +199,7 @@
               </div>
               <div class="project-tags"><span class="tag tag-solid">C#</span><span class="tag tag-solid">tModLoader</span><span class="tag tag-solid">Terraria</span><span class="tag tag-solid">CalamityMod</span><span class="tag tag-solid">GitHub</span></div>
               <div class="project-links">
-                <a class="btn btn-sm btn-solid" href="downloads/HongmengArk_v1.0.0.tmod" download>⬇ 下载模组 v1.0.0</a>
+                <a class="btn btn-sm btn-solid" href="downloads/HongmengArk_v1.0.0.tmod" download><svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> 下载模组 v1.0.0</a>
                 <a class="btn btn-sm btn-outline" href="https://github.com/zongmr3-coder/trmod-HM" target="_blank" rel="noopener">查看源码</a>
               </div>
             </div>
@@ -203,7 +209,7 @@
       <article class="project-item">
         <button type="button" class="project-toggle" aria-expanded="false" aria-controls="project-3">
           <span class="project-toggle-title"><h3>2048 小游戏</h3><p class="project-sub">纯前端实现的 2048 · 排行榜 · 自动存档</p></span>
-          <span class="project-toggle-side"><span class="tl-date">2026.08</span><span class="project-arrow" aria-hidden="true">▾</span></span>
+          <span class="project-toggle-side"><span class="tl-date">2026.08</span><span class="project-arrow" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><polyline points="6 9 12 15 18 9"/></svg></span></span>
         </button>
         <div class="project-details" id="project-3">
           <div class="project-details-inner">
@@ -215,7 +221,7 @@
               </div>
               <div class="project-tags"><span class="tag tag-solid">JavaScript</span><span class="tag tag-solid">HTML5</span><span class="tag tag-solid">CSS3</span><span class="tag tag-solid">2048</span></div>
               <div class="project-links">
-                <a class="btn btn-sm btn-solid" href="https://game2048-d25.pages.dev/" target="_blank" rel="noopener">▶ 在线试玩</a>
+                <a class="btn btn-sm btn-solid" href="https://game2048-d25.pages.dev/" target="_blank" rel="noopener"><svg viewBox="0 0 24 24" width="14" height="14" fill="currentColor" aria-hidden="true"><polygon points="5 3 19 12 5 21 5 3"/></svg> 在线试玩</a>
                 <a class="btn btn-sm btn-outline" href="https://github.com/zongmr3-coder/Game2048" target="_blank" rel="noopener">查看源码</a>
               </div>
             </div>
@@ -233,11 +239,11 @@
       <p class="sec-sub">走过的路都算数，小成就也值得被记住</p>
     </div>
     <div class="awards-grid">
-      <div class="award-card reveal"><div class="award-ico">🏆</div><h3>拿过一次奖学金</h3><p>在校期间成绩尚可，第一次体会到「认真做事会有回报」。</p></div>
-      <div class="award-card reveal"><div class="award-ico">🏁</div><h3>ROBOCOM 智能车竞赛</h3><p>浙江省三等奖，第一次把自控和代码用在真实的小车上。</p></div>
-      <div class="award-card reveal"><div class="award-ico">🌟</div><h3>社会实践优秀个人</h3><p>校园外的第一课，学会和陌生人打交道。</p></div>
-      <div class="award-card reveal"><div class="award-ico">📖</div><h3>英语 CET-4（485 分）</h3><p>足够流畅地啃英文文档，写代码时帮了大忙。</p></div>
-      <div class="award-card reveal"><div class="award-ico">🎭</div><h3>心理协会干部</h3><p>负责宣传与组织活动，那是第一次做「对外输出」的事。</p></div>
+      <div class="award-card reveal"><div class="award-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><defs><linearGradient id="awardGrad1" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFD54F"/><stop offset="1" stop-color="#FF9800"/></linearGradient><linearGradient id="awardGrad1b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FF8A65"/><stop offset="1" stop-color="#E53935"/></linearGradient></defs><circle cx="12" cy="8" r="7" stroke="url(#awardGrad1)"/><polyline points="8.21 13.89 7 23 12 20 17 23 15.79 13.88" stroke="url(#awardGrad1b)"/></svg></div><h3>拿过一次奖学金</h3><p>在校期间成绩尚可，第一次体会到「认真做事会有回报」。</p></div>
+      <div class="award-card reveal"><div class="award-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><defs><linearGradient id="awardGrad2" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#4FC3F7"/><stop offset="1" stop-color="#7E57C2"/></linearGradient></defs><path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z" stroke="url(#awardGrad2)"/><line x1="4" y1="22" x2="4" y2="15" stroke="#90A4AE"/></svg></div><h3>ROBOCOM 智能车竞赛</h3><p>浙江省三等奖，第一次把自控和代码用在真实的小车上。</p></div>
+      <div class="award-card reveal"><div class="award-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><defs><linearGradient id="awardGrad3" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB74D"/><stop offset="1" stop-color="#F4511E"/></linearGradient></defs><path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2" stroke="url(#awardGrad3)"/><circle cx="12" cy="7" r="4" stroke="url(#awardGrad3)"/></svg></div><h3>社会实践优秀个人</h3><p>校园外的第一课，学会和陌生人打交道。</p></div>
+      <div class="award-card reveal"><div class="award-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><defs><linearGradient id="awardGrad4" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#64B5F6"/><stop offset="1" stop-color="#1E88E5"/></linearGradient></defs><path d="M4 19.5A2.5 2.5 0 0 1 6.5 17H20" stroke="url(#awardGrad4)"/><path d="M6.5 2H20v20H6.5A2.5 2.5 0 0 1 4 19.5v-15A2.5 2.5 0 0 1 6.5 2z" stroke="url(#awardGrad4)"/></svg></div><h3>英语 CET-4（485 分）</h3><p>足够流畅地啃英文文档，写代码时帮了大忙。</p></div>
+      <div class="award-card reveal"><div class="award-ico"><svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><defs><linearGradient id="awardGrad5" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F48FB1"/><stop offset="1" stop-color="#D81B60"/></linearGradient></defs><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z" stroke="url(#awardGrad5)"/></svg></div><h3>心理协会干部</h3><p>负责宣传与组织活动，那是第一次做「对外输出」的事。</p></div>
     </div>
   </div>
 </section>
@@ -289,8 +295,8 @@
       <p class="sec-sub">期待一次对话，或一份新的挑战</p>
     </div>
     <div class="contact-grid reveal">
-      <a class="contact-card" href="tel:17858831484"><div class="contact-ico">📞</div><div><h3>电话</h3><p>17858831484</p></div></a>
-      <a class="contact-card" href="mailto:zongmr3@gmail.com"><div class="contact-ico">✉️</div><div><h3>邮箱</h3><p>zongmr3@gmail.com</p></div></a>
+      <a class="contact-card" href="tel:17858831484"><div class="contact-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72c.127.96.361 1.903.7 2.81a2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45c.907.339 1.85.573 2.81.7A2 2 0 0 1 22 16.92z"/></svg></div><div><h3>电话</h3><p>17858831484</p></div></a>
+      <a class="contact-card" href="mailto:zongmr3@gmail.com"><div class="contact-ico"><svg viewBox="0 0 24 24" width="24" height="24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h16c1.1 0 2 .9 2 2v12c0 1.1-.9 2-2 2H4c-1.1 0-2-.9-2-2V6c0-1.1.9-2 2-2z"/><polyline points="22,6 12,13 2,6"/></svg></div><div><h3>邮箱</h3><p>zongmr3@gmail.com</p></div></a>
     </div>
   </div>
 </section>
@@ -301,7 +307,7 @@
   <div class="container"><p>© <span id="year">2026</span> 仲子龙 · 记录、折腾与分享</p></div>
 </footer>
 
-<button class="to-top" id="toTop" aria-label="回到顶部">↑</button>
+<button class="to-top" id="toTop" aria-label="回到顶部"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="12" y1="19" x2="12" y2="5"/><polyline points="5 12 12 5 19 12"/></svg></button>
 
 <script src="js/config.js"></script>
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
