@@ -449,21 +449,3 @@ body{position:relative}
 @keyframes neb-drift-f{from{transform:translate(0,0)}to{transform:translate(-30px,-20px)}}
 @keyframes neb-drift-g{from{transform:translate(0,0)}to{transform:translate(26px,22px)}}
 @keyframes neb-drift-h{from{transform:translate(0,0)}to{transform:translate(-24px,-18px)}}
-
-/* ---------- 滚动中：临时关闭毛玻璃重采样与星云动画，保证滚动丝滑 ---------- */
-body.is-scrolling .about-card,body.is-scrolling .stat,body.is-scrolling .skill-group,body.is-scrolling .award-card,body.is-scrolling .contact-card,body.is-scrolling .gb-card,body.is-scrolling .project-item,body.is-scrolling .mods-game-card,body.is-scrolling .mods-mod-card,body.is-scrolling .gb-msg,body.is-scrolling .meta-chip,body.is-scrolling .mod-badge,body.is-scrolling .sidebar,body.is-scrolling .to-top,body.is-scrolling .form-field input,body.is-scrolling .form-field textarea,body.is-scrolling .sb-collapse,body.is-scrolling .sb-toggle{
-  -webkit-backdrop-filter:none;
-  backdrop-filter:none;
-}
-body.is-scrolling .about-card,body.is-scrolling .stat,body.is-scrolling .skill-group,body.is-scrolling .award-card,body.is-scrolling .contact-card,body.is-scrolling .gb-card,body.is-scrolling .project-item,body.is-scrolling .mods-game-card,body.is-scrolling .mods-mod-card,body.is-scrolling .gb-msg{
-  background:rgba(10,25,47,.76);
-}
-body.is-scrolling .sidebar{
-  background:rgba(10,25,47,.88);
-}
-body.is-scrolling .meta-chip,body.is-scrolling .mod-badge,body.is-scrolling .form-field input,body.is-scrolling .form-field textarea,body.is-scrolling .sb-collapse,body.is-scrolling .sb-toggle{
-  background:rgba(17,34,64,.6);
-}
-body.is-scrolling .neb-cloud{
-  animation-play-state:paused;
-}
