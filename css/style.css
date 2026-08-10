@@ -235,7 +235,7 @@ body.sb-collapsed .scroll-hint{left:calc(50% + 43px)}
 .site-footer{border-top:1px solid var(--bg-line);padding:36px 0;text-align:center;color:var(--ink-soft);font-size:.88rem;font-family:var(--mono)}
 
 /* ---------- 回到顶部 ---------- */
-.to-top{position:fixed;right:26px;bottom:30px;z-index:99;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(100,255,218,.35);background:linear-gradient(145deg,rgba(23,42,72,.82),rgba(10,25,47,.82));color:var(--accent);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(16px) scale(.85);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 8px 24px rgba(2,12,27,.55),inset 0 1px 0 rgba(255,255,255,.06);transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.36,1),visibility .35s,background .3s,color .3s,border-color .3s,box-shadow .3s}
+.to-top{position:fixed;right:26px;bottom:30px;z-index:99;width:48px;height:48px;border-radius:50%;display:flex;align-items:center;justify-content:center;border:1px solid rgba(100,255,218,.35);background:linear-gradient(145deg,rgba(23,42,72,.82),rgba(10,25,47,.82));color:var(--accent);cursor:pointer;opacity:0;visibility:hidden;transform:translateY(16px) scale(.85);box-shadow:0 8px 24px rgba(2,12,27,.55),inset 0 1px 0 rgba(255,255,255,.06);transition:opacity .35s ease,transform .45s cubic-bezier(.22,1,.36,1),visibility .35s,background .3s,color .3s,border-color .3s,box-shadow .3s}
 .to-top::before{content:"";position:absolute;inset:-4px;border-radius:50%;background:conic-gradient(var(--accent) var(--progress,0%),rgba(100,255,218,.14) 0);-webkit-mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3.5px));mask:radial-gradient(farthest-side,transparent calc(100% - 3.5px),#000 calc(100% - 3.5px));pointer-events:none;transition:opacity .3s ease}
 .to-top svg{width:20px;height:20px;position:relative;z-index:1;transition:transform .3s}
 .to-top.show{opacity:1;visibility:visible;transform:none}
@@ -403,30 +403,34 @@ body.sb-collapsed .main{margin-left:86px}
 body.sb-collapsed .sidebar-glow{width:86px}
 @media (max-width:1000px){.sidebar-glow{width:100%}}
 
-/* ---------- 全站卡片：毛玻璃统一质感 ---------- */
-.about-card,.stat,.skill-group,.award-card,.contact-card,.gb-card,.project-item{
+/* ---------- 卡片质感：仅侧边栏与项目/模组卡片保留毛玻璃，其余用性能更好的半透明深色 ---------- */
+.project-item{
   background:rgba(17,34,64,.2);
   -webkit-backdrop-filter:blur(18px) saturate(160%);
   backdrop-filter:blur(18px) saturate(160%);
   border-color:rgba(148,184,255,.18);
   box-shadow:var(--shadow-card),inset 0 1px 0 rgba(255,255,255,.05);
 }
-.mods-game-card,.mods-mod-card,.gb-msg{
+.mods-game-card,.mods-mod-card{
   background:rgba(17,34,64,.26);
   -webkit-backdrop-filter:blur(16px) saturate(155%);
   backdrop-filter:blur(16px) saturate(155%);
   border-color:rgba(148,184,255,.18);
   box-shadow:var(--shadow-card),inset 0 1px 0 rgba(255,255,255,.05);
 }
-.meta-chip,.mod-badge,.form-field input,.form-field textarea,.sb-collapse,.sb-toggle{
-  background:rgba(17,34,64,.16);
-  -webkit-backdrop-filter:blur(12px) saturate(150%);
-  backdrop-filter:blur(12px) saturate(150%);
+.about-card,.stat,.skill-group,.award-card,.contact-card,.gb-card,.gb-msg,.meta-chip,.mod-badge{
+  background:rgba(13,28,52,.8);
+  border-color:rgba(148,184,255,.16);
+  box-shadow:var(--shadow-card),inset 0 1px 0 rgba(255,255,255,.04);
+}
+.form-field input,.form-field textarea,.sb-collapse,.sb-toggle{
+  background:rgba(17,34,64,.74);
   border-color:rgba(148,184,255,.2);
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
-  .about-card,.stat,.skill-group,.award-card,.contact-card,.gb-card,.project-item,.mods-game-card,.mods-mod-card,.meta-chip,.mod-badge,.gb-msg{background:rgba(17,34,64,.92)}
-  .form-field input,.form-field textarea,.sb-collapse,.sb-toggle{background:rgba(17,34,64,.88)}
+  .project-item,.mods-game-card,.mods-mod-card{background:rgba(17,34,64,.94)}
+  .about-card,.stat,.skill-group,.award-card,.contact-card,.gb-card,.gb-msg,.meta-chip,.mod-badge{background:rgba(17,34,64,.94)}
+  .form-field input,.form-field textarea,.sb-collapse,.sb-toggle{background:rgba(17,34,64,.9)}
 }
 
 /* ---------- 宇宙星云：SVG 湍流噪声生成的丝缕云气，随页面锚定漂移 ---------- */
