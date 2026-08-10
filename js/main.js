@@ -9,7 +9,14 @@
 
   /* ---------- 滚动状态（rAF 节流，滚动事件只合并到每帧处理一次） ---------- */
   var scrollPending = false;
+  var scrollTimer = null;
   function onScroll() {
+    /* 滚动期间临时关闭昂贵的毛玻璃重采样，滚动停止 120ms 后恢复 */
+    document.body.classList.add("is-scrolling");
+    clearTimeout(scrollTimer);
+    scrollTimer = setTimeout(function () {
+      document.body.classList.remove("is-scrolling");
+    }, 120);
     if (scrollPending) return;
     scrollPending = true;
     requestAnimationFrame(function () {
@@ -286,10 +293,15 @@
         s.y += (dy / d) * f * 1.0;
       }
       var a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw));
-      ctx.beginPath();
-      ctx.arc(s.x - ox, s.y - oy, s.r, 0, Math.PI * 2);
       ctx.fillStyle = "rgba(220,235,255," + a.toFixed(3) + ")";
-      ctx.fill();
+      if (s.r < 1.2) {
+        var sz = s.r * 1.7;
+        ctx.fillRect(s.x - ox - sz / 2, s.y - oy - sz / 2, sz, sz);
+      } else {
+        ctx.beginPath();
+        ctx.arc(s.x - ox, s.y - oy, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      }
     }
   }
 
