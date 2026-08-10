@@ -34,6 +34,10 @@
     sections.forEach(function (sec) {
       if (sec.offsetTop <= pos) currentId = sec.id;
     });
+    /* 页面已滚到底部时，直接高亮最后一个区块（避免停在页尾短区块时误判为上一个） */
+    var doc = document.documentElement;
+    var atBottom = window.scrollY + window.innerHeight >= doc.scrollHeight - 4;
+    if (atBottom && sections.length) currentId = sections[sections.length - 1].id;
     navLinks.forEach(function (link) {
       link.classList.toggle("active", link.getAttribute("href") === "#" + currentId);
     });
@@ -199,7 +203,7 @@
 
   /* 星空固定视口：每屏约 130 颗（1080p 基准），密度随面积缩放 */
   function targetCount() {
-    return Math.max(60, Math.min(400, Math.round((W * VH) / 16000)));
+    return Math.max(70, Math.min(480, Math.round((W * VH) / 13333)));
   }
 
   /* ---- 参考版星星结构：整页文档坐标 ---- */
@@ -209,7 +213,7 @@
       y: Math.random() * VH,
       r: Math.random() * 1.4 + 0.3,
       tw: Math.random() * Math.PI * 2,
-      sp: 0.008 + Math.random() * 0.02,
+      sp: 0.011 + Math.random() * 0.026,
       vy: 0.02 + Math.random() * 0.06,
       a: 0.75
     };
@@ -288,7 +292,7 @@
         s.y += s.vy;
         if (s.y > VH + 4) { s.y = -4; s.x = Math.random() * W; }
         s.tw += s.sp;
-        s.a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw));
+        s.a = 0.12 + 0.88 * Math.abs(Math.sin(s.tw));
         var dx = s.x - mouse.x, dy = s.y - mouse.y;
         var d = Math.sqrt(dx * dx + dy * dy);
         if (d < 120 && d > 0.001) {

@@ -1,4 +1,4 @@
-/* ============================================================
+﻿/* ============================================================
    模组开发 · 游戏与模组数据
    ------------------------------------------------------------
    新增游戏：在 MODS_GAMES 数组中新增一个对象
@@ -165,14 +165,40 @@
     );
   }
 
-  function show(html) {
-    shell.innerHTML = html;
+  var reducedMotion =
+    window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+  var animating = false;
+
+  /* 带过渡动画的视图切换：打开游戏从右滑入、返回从左滑入 */
+  function show(html, dir) {
+    if (animating) return;
+    if (reducedMotion || !dir) { shell.innerHTML = html; return; }
+    animating = true;
+    var leaveCls = dir === "back" ? "mods-leave-right" : "mods-leave-left";
+    var enterCls = dir === "back" ? "mods-enter-left" : "mods-enter-right";
+    shell.classList.add(leaveCls);
+    setTimeout(function () {
+      shell.innerHTML = html;
+      shell.classList.remove("mods-leave-left", "mods-leave-right");
+      void shell.offsetWidth;
+      shell.classList.add(enterCls);
+      function onEnd(ev) {
+        if (ev.target === shell) end();
+      }
+      function end() {
+        shell.classList.remove("mods-enter-left", "mods-enter-right");
+        shell.removeEventListener("animationend", onEnd);
+        animating = false;
+      }
+      shell.addEventListener("animationend", onEnd);
+      setTimeout(end, 320);
+    }, 140);
   }
 
   shell.addEventListener("click", function (e) {
     var back = e.target.closest("[data-back]");
     if (back) {
-      show(renderGameGrid());
+      show(renderGameGrid(), "back");
       return;
     }
     var card = e.target.closest(".mods-game-card");
@@ -180,7 +206,7 @@
     var game = MODS_GAMES.find(function (g) {
       return g.id === card.getAttribute("data-game");
     });
-    if (game) show(renderGameView(game));
+    if (game) show(renderGameView(game), "open");
   });
 
   show(renderGameGrid());

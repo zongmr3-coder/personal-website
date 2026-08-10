@@ -97,7 +97,7 @@ body.sb-collapsed .scroll-hint{left:calc(50% + 43px)}
 .section{padding:110px 0;border-top:1px solid var(--bg-line);content-visibility:auto;contain-intrinsic-size:auto 900px}
 .section-head{margin-bottom:52px}
 .sec-label{font-family:var(--mono);font-size:.85rem;color:var(--accent);display:flex;align-items:center;gap:16px}
-.sec-label::after{content:"";flex:1;max-width:220px;height:1px;background:var(--bg-line)}
+/* 分割线已移除 */
 .sec-title{font-size:clamp(1.7rem,3.4vw,2.3rem);font-weight:700;margin-top:12px;letter-spacing:1px}
 .sec-sub{color:var(--ink-soft);margin-top:8px}
 .sec-head-flex{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;flex-wrap:wrap}
@@ -129,8 +129,11 @@ body.sb-collapsed .scroll-hint{left:calc(50% + 43px)}
 /* ---------- 经历 ---------- */
 .timeline{position:relative;padding-left:26px;margin-top:10px}
 .timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--bg-line)}
-.tl-item{position:relative;padding-bottom:38px}
-.tl-item:last-child{padding-bottom:0}
+.tl-item{position:relative;padding:22px 24px;margin-bottom:20px;background:var(--bg-card);border:1px solid var(--bg-line);border-radius:10px}
+.tl-item:last-child{margin-bottom:0}
+.tl-item.reveal{transition:opacity .7s ease,transform .3s ease,box-shadow .3s ease,border-color .3s ease}
+.tl-item:hover{border-color:var(--accent);box-shadow:var(--shadow-lift)}
+.tl-item.reveal:hover{transform:translateY(-3px)}
 .tl-dot{position:absolute;left:-26px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(100,255,218,.15)}
 .tl-dot::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(100,255,218,.4);animation:tlPulse 2.6s ease-out infinite}
 @keyframes tlPulse{0%{transform:scale(.5);opacity:.9}70%{transform:scale(1.4);opacity:0}100%{opacity:0}}
@@ -326,13 +329,19 @@ body.sb-collapsed .main{margin-left:86px}
 /* ---------- 按钮内 SVG 对齐 ---------- */
 .btn svg,.btn-sm svg{vertical-align:-2px;margin-right:5px}
 
-/* ---------- 深空星海背景层：星云色锚定在页面位置，随页面滚动 ---------- */
+/* ---------- 深空星海背景层：侧边栏配色交错混合（无光晕），随页面滚动 ---------- */
 .space-bg{
   position:absolute;inset:0;z-index:0;pointer-events:none;
-  background:
-    radial-gradient(1100px 760px at 78% 2%, rgba(59,29,94,.4), transparent 60%),
-    radial-gradient(950px 680px at 12% 16%, rgba(26,35,80,.5), transparent 55%),
-    radial-gradient(900px 620px at 50% 96%, rgba(13,44,66,.45), transparent 62%) #060D1F;
+  background-color:#0B1733;
+  background-image:
+    linear-gradient(160deg,
+      rgba(100,255,218,.16) 0%, rgba(79,182,255,.14) 14%, rgba(167,139,250,.16) 28%, rgba(244,114,182,.12) 42%,
+      rgba(100,255,218,.14) 56%, rgba(79,182,255,.16) 70%, rgba(167,139,250,.14) 84%, rgba(244,114,182,.12) 100%),
+    linear-gradient(20deg,
+      rgba(167,139,250,.13) 0%, rgba(100,255,218,.11) 17%, rgba(244,114,182,.11) 34%,
+      rgba(79,182,255,.13) 51%, rgba(167,139,250,.11) 68%, rgba(100,255,218,.11) 85%, rgba(244,114,182,.11) 100%),
+    linear-gradient(160deg, #0A142E 0%, #10224A 30%, #1C2854 55%, #262357 78%, #331D4B 100%);
+  background-repeat:no-repeat;
 }
 
 .vignette{
@@ -344,6 +353,19 @@ body.sb-collapsed .main{margin-left:86px}
   background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.05'/%3E%3C/svg%3E");
 }
 
+
+/* ---------- 模组视图切换过渡动画 ---------- */
+.mods-leave-left{animation:mods-out-left .14s ease forwards}
+.mods-leave-right{animation:mods-out-right .14s ease forwards}
+.mods-enter-left{animation:mods-in-left .26s cubic-bezier(.22,1,.36,1) both}
+.mods-enter-right{animation:mods-in-right .26s cubic-bezier(.22,1,.36,1) both}
+@keyframes mods-out-left{to{opacity:0;transform:translateX(-14px)}}
+@keyframes mods-out-right{to{opacity:0;transform:translateX(14px)}}
+@keyframes mods-in-right{from{opacity:0;transform:translateX(26px)}}
+@keyframes mods-in-left{from{opacity:0;transform:translateX(-26px)}}
+@media (prefers-reduced-motion: reduce){
+  .mods-leave-left,.mods-leave-right,.mods-enter-left,.mods-enter-right{animation:none}
+}
 /* ---------- 模组开发：游戏选择 → 模组详情 ---------- */
 .mods-intro{color:var(--ink-soft);font-size:.88rem;font-family:var(--mono);padding-top:4px}
 .mods-game-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(215px,1fr));gap:16px;margin-top:18px}
@@ -386,7 +408,7 @@ body.sb-collapsed .main{margin-left:86px}
 
 /* ---------- 侧边栏毛玻璃：背后的彩色光晕层（让模糊效果可见） ---------- */
 .sidebar-glow{
-  position:fixed;left:0;top:0;bottom:0;width:270px;z-index:1;pointer-events:none;transition:width .35s ease;
+  position:fixed;left:0;top:0;bottom:0;width:320px;z-index:1;pointer-events:none;transition:width .35s ease;
   background:
     radial-gradient(400px 300px at 22% 10%, rgba(100,255,218,.32), transparent 66%),
     radial-gradient(420px 360px at 60% 28%, rgba(79,182,255,.26), transparent 66%),
@@ -401,6 +423,12 @@ body.sb-collapsed .main{margin-left:86px}
   to{transform:translate3d(6px,-10px,0) scale(1.06)}
 }
 body.sb-collapsed .sidebar-glow{width:86px}
+@media (min-width:1001px){
+  .space-bg{
+    -webkit-mask-image:linear-gradient(to right,transparent 0px,#000 420px);
+    mask-image:linear-gradient(to right,transparent 0px,#000 420px);
+  }
+}
 @media (max-width:1000px){.sidebar-glow{width:100%}}
 
 /* ---------- 卡片质感：仅侧边栏与项目/模组卡片保留毛玻璃，其余用性能更好的半透明深色 ---------- */
@@ -433,24 +461,4 @@ body.sb-collapsed .sidebar-glow{width:86px}
   .form-field input,.form-field textarea,.sb-collapse,.sb-toggle{background:rgba(17,34,64,.9)}
 }
 
-/* ---------- 宇宙星云：SVG 湍流噪声生成的丝缕云气，随页面锚定漂移 ---------- */
 body{position:relative}
-.page-glow{position:absolute;inset:0;z-index:1;pointer-events:none;overflow:hidden}
-.nebula{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
-.neb-cloud{will-change:transform}
-.nc-a{animation:neb-drift-a 26s ease-in-out infinite alternate}
-.nc-b{animation:neb-drift-b 33s ease-in-out infinite alternate}
-.nc-c{animation:neb-drift-c 40s ease-in-out infinite alternate}
-.nc-d{animation:neb-drift-d 29s ease-in-out infinite alternate}
-.nc-e{animation:neb-drift-e 36s ease-in-out infinite alternate}
-.nc-f{animation:neb-drift-f 31s ease-in-out infinite alternate}
-.nc-g{animation:neb-drift-g 38s ease-in-out infinite alternate}
-.nc-h{animation:neb-drift-h 27s ease-in-out infinite alternate}
-@keyframes neb-drift-a{from{transform:translate(0,0)}to{transform:translate(46px,20px)}}
-@keyframes neb-drift-b{from{transform:translate(0,0)}to{transform:translate(-38px,26px)}}
-@keyframes neb-drift-c{from{transform:translate(0,0)}to{transform:translate(30px,-24px)}}
-@keyframes neb-drift-d{from{transform:translate(0,0)}to{transform:translate(-42px,18px)}}
-@keyframes neb-drift-e{from{transform:translate(0,0)}to{transform:translate(36px,30px)}}
-@keyframes neb-drift-f{from{transform:translate(0,0)}to{transform:translate(-30px,-20px)}}
-@keyframes neb-drift-g{from{transform:translate(0,0)}to{transform:translate(26px,22px)}}
-@keyframes neb-drift-h{from{transform:translate(0,0)}to{transform:translate(-24px,-18px)}}
