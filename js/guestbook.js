@@ -1,9 +1,9 @@
-/* ============================================================
+﻿/* ============================================================
    留言板脚本
    - 已配置 Supabase（js/config.js）：读写云端数据库，并实时接收新留言
    - 未配置 Supabase：本地兜底，用浏览器本地存储保存/读取留言
    ============================================================ */
-(function () {
+function initGuestbook() {
   "use strict";
 
   var CONFIG = window.SITE_CONFIG || {};
@@ -289,4 +289,43 @@
   /* ---------- 初始化 ---------- */
   loadMessages();
   subscribeRealtime();
+}
+
+/* ---------- 懒加载：滚动到留言区附近再加载 Supabase 并初始化，观感不变、初载更快 ---------- */
+(function () {
+  "use strict";
+  var CONFIG = window.SITE_CONFIG || {};
+  var section = document.getElementById("guestbook");
+  var needCloud = !!(CONFIG.SUPABASE_URL && CONFIG.SUPABASE_ANON_KEY);
+
+  function ensureSupabase(cb) {
+    if (typeof window.supabase !== "undefined") { cb(); return; }
+    var s = document.createElement("script");
+    s.src = "https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2";
+    s.onload = cb;
+    s.onerror = cb; /* 加载失败则自动走本地兜底 */
+    document.head.appendChild(s);
+  }
+
+  function start() {
+    if (needCloud && typeof window.supabase === "undefined") {
+      ensureSupabase(initGuestbook);
+    } else {
+      initGuestbook();
+    }
+  }
+
+  if (needCloud && "IntersectionObserver" in window && section) {
+    var io = new IntersectionObserver(function (entries) {
+      var hit = false;
+      entries.forEach(function (e) { if (e.isIntersecting) hit = true; });
+      if (!hit) return;
+      io.disconnect();
+      start();
+    }, { rootMargin: "600px 0px" });
+    io.observe(section);
+  } else {
+    start();
+  }
 })();
+
