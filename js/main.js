@@ -186,13 +186,14 @@
   var scrollX = 0, scrollY = 0, lastCX = -9999, lastCY = -9999;
   var stars = [], meteors = [];
   var running = true, nextMeteorAt = 2.5;
+  var scrolling = false, scrollStopTimer = null;
   var mouse = { x: -9999, y: -9999 };
 
   function rand(min, max) { return min + Math.random() * (max - min); }
 
-  /* 每屏约 130 颗（在之前基础上再减少约三成），整页按屏数换算，上限 4000 */
+  /* 每屏约 130 颗（1080p 基准），整页按屏数换算，上限 4000 */
   function targetCount() {
-    var perScreen = Math.round((W * VH) / 7000);
+    var perScreen = Math.round((W * VH) / 16000);
     var screens = Math.max(1, Math.ceil(docH / VH));
     return Math.min(4000, Math.max(100, perScreen * screens));
   }
@@ -205,7 +206,8 @@
       r: Math.random() * 1.4 + 0.3,
       tw: Math.random() * Math.PI * 2,
       sp: 0.008 + Math.random() * 0.02,
-      vy: 0.02 + Math.random() * 0.06
+      vy: 0.02 + Math.random() * 0.06,
+      a: 0.75
     };
   }
 
@@ -239,7 +241,7 @@
   }
 
   function resize() {
-    DPR = Math.min(window.devicePixelRatio || 1, 2);
+    DPR = Math.min(window.devicePixelRatio || 1, 1.75);
     W = canvas.clientWidth || window.innerWidth;
     VW = document.documentElement.clientWidth || window.innerWidth;
     VH = document.documentElement.clientHeight || window.innerHeight;
@@ -267,26 +269,34 @@
     });
   }
 
-  /* ---- 星星：闪烁 + 缓慢下落回卷 + 鼠标直接推开（同一文档坐标） ---- */
+  /* ---- 星星：闪烁 + 缓慢下落回卷 + 鼠标直接推开（同一文档坐标）
+     滚动中只做平移绘制（跳过闪烁/漂移/斥力计算），保证滚动丝滑 ---- */
+  var STAR_STYLES = [];
+  for (var si = 0; si <= 40; si++) {
+    STAR_STYLES.push("rgba(220,235,255," + (si / 40).toFixed(3) + ")");
+  }
   function drawStars() {
     var ox = scrollX, oy = scrollY;
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
-      s.y += s.vy;
-      if (s.y > docH + 4) { s.y = -4; s.x = Math.random() * W; }
-      s.tw += s.sp;
-      /* 只绘制当前视口内的星星：先裁剪，再对可见星做鼠标斥力，省掉视口外大量开方 */
+      if (!scrolling) {
+        s.y += s.vy;
+        if (s.y > docH + 4) { s.y = -4; s.x = Math.random() * W; }
+        s.tw += s.sp;
+        s.a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw));
+        var dx = s.x - mouse.x, dy = s.y - mouse.y;
+        var d = Math.sqrt(dx * dx + dy * dy);
+        if (d < 120 && d > 0.001) {
+          var f = (120 - d) / 120;
+          s.x += (dx / d) * f * 1.0;
+          s.y += (dy / d) * f * 1.0;
+        }
+      }
       if (s.y < oy - 6 || s.y > oy + VH + 6) continue;
       if (s.x < ox - 6 || s.x > ox + W + 6) continue;
-      var dx = s.x - mouse.x, dy = s.y - mouse.y;
-      var d = Math.sqrt(dx * dx + dy * dy);
-      if (d < 120 && d > 0.001) {
-        var f = (120 - d) / 120;
-        s.x += (dx / d) * f * 1.0;
-        s.y += (dy / d) * f * 1.0;
-      }
-      var a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw));
-      ctx.fillStyle = "rgba(220,235,255," + a.toFixed(3) + ")";
+      var ai = (s.a * 40) | 0;
+      if (ai > 40) ai = 40;
+      ctx.fillStyle = STAR_STYLES[ai];
       if (s.r < 1.2) {
         var sz = s.r * 1.7;
         ctx.fillRect(s.x - ox - sz / 2, s.y - oy - sz / 2, sz, sz);
@@ -406,7 +416,12 @@
     mouse.x = -9999; mouse.y = -9999;
   });
   window.addEventListener("resize", resize);
-  window.addEventListener("scroll", syncScroll, { passive: true });
+  window.addEventListener("scroll", function () {
+    syncScroll();
+    scrolling = true;
+    clearTimeout(scrollStopTimer);
+    scrollStopTimer = setTimeout(function () { scrolling = false; }, 150);
+  }, { passive: true });
   window.addEventListener("load", function () { syncScroll(); syncDocHeight(); });
   setTimeout(syncDocHeight, 800);
   setTimeout(syncDocHeight, 2500);
