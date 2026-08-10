@@ -392,10 +392,14 @@
       mctx.globalAlpha = 1;
       return;
     }
-    if ((frameCount++ % 30) === 0) syncDocHeight();
-    ctx.clearRect(0, 0, W, VH);
+    frameCount++;
+    if ((frameCount % 30) === 0) syncDocHeight();
+    /* 星星闪烁非常缓慢：隔帧重绘即可，观感无差别，开销减半 */
+    if ((frameCount % 2) === 0) {
+      ctx.clearRect(0, 0, W, VH);
+      drawStars();
+    }
     mctx.clearRect(0, 0, W, VH);
-    drawStars();
     drawMeteors(t / 1000);
 
     ctx.globalAlpha = 1;
