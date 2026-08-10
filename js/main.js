@@ -262,7 +262,7 @@
     var y = scrollY + rand(VH * 0.02, VH * 0.28);
     meteors.push({
       x: x, y: y, vx: vx, vy: vy,
-      life: 0, len: rand(90, 170),
+      life: 0, len: rand(40, 80),
       appear: rand(32, 46)
     });
   }
