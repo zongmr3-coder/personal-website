@@ -181,6 +181,12 @@
   canvas.setAttribute("aria-hidden", "true");
   document.body.appendChild(canvas);
   var ctx = canvas.getContext("2d");
+  /* 流星独立画布：滚动时星空冻结，流星仍可继续运动 */
+  var mcanvas = document.createElement("canvas");
+  mcanvas.className = "meteor-bg";
+  mcanvas.setAttribute("aria-hidden", "true");
+  document.body.appendChild(mcanvas);
+  var mctx = mcanvas.getContext("2d");
 
   var W = 0, VW = 0, VH = 0, docH = 0, DPR = 1;
   var scrollX = 0, scrollY = 0, lastCX = -9999, lastCY = -9999;
@@ -191,18 +197,16 @@
 
   function rand(min, max) { return min + Math.random() * (max - min); }
 
-  /* 每屏约 130 颗（1080p 基准），整页按屏数换算，上限 4000 */
+  /* 星空固定视口：每屏约 130 颗（1080p 基准），密度随面积缩放 */
   function targetCount() {
-    var perScreen = Math.round((W * VH) / 16000);
-    var screens = Math.max(1, Math.ceil(docH / VH));
-    return Math.min(4000, Math.max(100, perScreen * screens));
+    return Math.max(60, Math.min(400, Math.round((W * VH) / 16000)));
   }
 
   /* ---- 参考版星星结构：整页文档坐标 ---- */
   function makeStar() {
     return {
       x: Math.random() * W,
-      y: Math.random() * docH,
+      y: Math.random() * VH,
       r: Math.random() * 1.4 + 0.3,
       tw: Math.random() * Math.PI * 2,
       sp: 0.008 + Math.random() * 0.02,
@@ -220,7 +224,6 @@
   function syncScroll() {
     scrollX = window.scrollX || 0;
     scrollY = window.scrollY || 0;
-    if (lastCX > -9000) { mouse.x = lastCX + scrollX; mouse.y = lastCY + scrollY; }
   }
 
   function syncDocHeight() {
@@ -254,14 +257,17 @@
     canvas.width = Math.round(W * DPR);
     canvas.height = Math.round(VH * DPR);
     ctx.setTransform(DPR, 0, 0, DPR, 0, 0);
+    mcanvas.width = Math.round(W * DPR);
+    mcanvas.height = Math.round(VH * DPR);
+    mctx.setTransform(DPR, 0, 0, DPR, 0, 0);
     syncScroll();
     buildStars();
   }
 
   function spawnMeteor() {
     var vx = rand(5.5, 9), vy = rand(2.8, 4.6);
-    var x = scrollX + rand(VW * 0.05, VW * 0.6);
-    var y = scrollY + rand(VH * 0.02, VH * 0.28);
+    var x = rand(VW * 0.05, VW * 0.6);
+    var y = rand(VH * 0.02, VH * 0.28);
     meteors.push({
       x: x, y: y, vx: vx, vy: vy,
       life: 0, len: rand(40, 80),
@@ -269,19 +275,18 @@
     });
   }
 
-  /* ---- 星星：闪烁 + 缓慢下落回卷 + 鼠标直接推开（同一文档坐标）
-     滚动中只做平移绘制（跳过闪烁/漂移/斥力计算），保证滚动丝滑 ---- */
+  /* ---- 星星：固定视口的星空（不随页面滚动），闪烁 + 缓慢下落回卷 + 鼠标推开
+     滚动中整块画布冻结，停止滚动后动画自动恢复，滚动零开销 ---- */
   var STAR_STYLES = [];
   for (var si = 0; si <= 40; si++) {
     STAR_STYLES.push("rgba(220,235,255," + (si / 40).toFixed(3) + ")");
   }
   function drawStars() {
-    var ox = scrollX, oy = scrollY;
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
       if (!scrolling) {
         s.y += s.vy;
-        if (s.y > docH + 4) { s.y = -4; s.x = Math.random() * W; }
+        if (s.y > VH + 4) { s.y = -4; s.x = Math.random() * W; }
         s.tw += s.sp;
         s.a = 0.35 + 0.65 * Math.abs(Math.sin(s.tw));
         var dx = s.x - mouse.x, dy = s.y - mouse.y;
@@ -292,23 +297,21 @@
           s.y += (dy / d) * f * 1.0;
         }
       }
-      if (s.y < oy - 6 || s.y > oy + VH + 6) continue;
-      if (s.x < ox - 6 || s.x > ox + W + 6) continue;
       var ai = (s.a * 40) | 0;
       if (ai > 40) ai = 40;
       ctx.fillStyle = STAR_STYLES[ai];
       if (s.r < 1.2) {
         var sz = s.r * 1.7;
-        ctx.fillRect(s.x - ox - sz / 2, s.y - oy - sz / 2, sz, sz);
+        ctx.fillRect(s.x - sz / 2, s.y - sz / 2, sz, sz);
       } else {
         ctx.beginPath();
-        ctx.arc(s.x - ox, s.y - oy, s.r, 0, Math.PI * 2);
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
         ctx.fill();
       }
     }
   }
 
-  /* ---- 流星：柔和淡入，完整飞出可视界面后自然消失 ---- */
+  /* ---- 流星：柔和淡入，完整飞出可视界面后自然消失（独立画布，滚动时持续运动） ---- */
   function drawMeteors(time) {
     if (time > nextMeteorAt && meteors.length < 3) {
       spawnMeteor();
@@ -325,56 +328,54 @@
       /* 保持完整亮度，整条流星（含拖尾末端）完全飞出可视界面后才移除 */
       var tailEndX = mt.x - mt.vx * mt.len;
       var tailEndY = mt.y - mt.vy * mt.len;
-      if (mt.life > 1500 || tailEndX > scrollX + VW + 20 || tailEndY > scrollY + VH + 20) {
+      if (mt.life > 1500 || tailEndX > VW + 20 || tailEndY > VH + 20) {
         meteors.splice(m, 1); m--; continue;
       }
-      var px = mt.x - scrollX, py = mt.y - scrollY;
+      var px = mt.x, py = mt.y;
       if (py < -120 || py > VH + 120) continue;
       var curLen = mt.len * (0.45 + 0.55 * inFade);
       var tailX = px - mt.vx * curLen, tailY = py - mt.vy * curLen;
       var headA = (0.95 * fade).toFixed(3);
-      var glow = ctx.createLinearGradient(px, py, tailX, tailY);
+      var glow = mctx.createLinearGradient(px, py, tailX, tailY);
       glow.addColorStop(0, "rgba(150,205,255," + (0.4 * fade).toFixed(3) + ")");
       glow.addColorStop(1, "rgba(150,205,255,0)");
-      ctx.globalAlpha = 1;
-      ctx.strokeStyle = glow;
-      ctx.lineWidth = 5;
-      ctx.lineCap = "round";
-      ctx.beginPath();
-      ctx.moveTo(px, py);
-      ctx.lineTo(tailX, tailY);
-      ctx.stroke();
-      var core = ctx.createLinearGradient(px, py, tailX, tailY);
+      mctx.globalAlpha = 1;
+      mctx.strokeStyle = glow;
+      mctx.lineWidth = 5;
+      mctx.lineCap = "round";
+      mctx.beginPath();
+      mctx.moveTo(px, py);
+      mctx.lineTo(tailX, tailY);
+      mctx.stroke();
+      var core = mctx.createLinearGradient(px, py, tailX, tailY);
       core.addColorStop(0, "rgba(255,255,255," + headA + ")");
       core.addColorStop(0.25, "rgba(200,235,255," + (0.55 * fade).toFixed(3) + ")");
       core.addColorStop(1, "rgba(200,235,255,0)");
-      ctx.strokeStyle = core;
-      ctx.lineWidth = 1.6;
-      ctx.beginPath();
-      ctx.moveTo(px, py);
-      ctx.lineTo(tailX, tailY);
-      ctx.stroke();
-      var hg = ctx.createRadialGradient(px, py, 0, px, py, 8);
+      mctx.strokeStyle = core;
+      mctx.lineWidth = 1.6;
+      mctx.beginPath();
+      mctx.moveTo(px, py);
+      mctx.lineTo(tailX, tailY);
+      mctx.stroke();
+      var hg = mctx.createRadialGradient(px, py, 0, px, py, 8);
       hg.addColorStop(0, "rgba(255,255,255," + headA + ")");
       hg.addColorStop(0.4, "rgba(180,225,255," + (0.35 * fade).toFixed(3) + ")");
       hg.addColorStop(1, "rgba(180,225,255,0)");
-      ctx.fillStyle = hg;
-      ctx.beginPath();
-      ctx.arc(px, py, 8, 0, Math.PI * 2);
-      ctx.fill();
+      mctx.fillStyle = hg;
+      mctx.beginPath();
+      mctx.arc(px, py, 8, 0, Math.PI * 2);
+      mctx.fill();
     }
   }
 
   function drawStatic() {
     ctx.clearRect(0, 0, W, VH);
-    var ox = scrollX, oy = scrollY;
     for (var i = 0; i < stars.length; i++) {
       var s = stars[i];
-      if (s.y < oy - 6 || s.y > oy + VH + 6) continue;
       ctx.globalAlpha = 0.8;
       ctx.fillStyle = "rgba(220,235,255,0.8)";
       ctx.beginPath();
-      ctx.arc(s.x - ox, s.y - oy, s.r, 0, Math.PI * 2);
+      ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
       ctx.fill();
     }
     ctx.globalAlpha = 1;
@@ -384,12 +385,21 @@
   function frame(t) {
     if (!running) return;
     requestAnimationFrame(frame);
+    if (scrolling) {
+      /* 滚动中：星空冻结，流星继续运动 */
+      mctx.clearRect(0, 0, W, VH);
+      drawMeteors(t / 1000);
+      mctx.globalAlpha = 1;
+      return;
+    }
     if ((frameCount++ % 30) === 0) syncDocHeight();
     ctx.clearRect(0, 0, W, VH);
+    mctx.clearRect(0, 0, W, VH);
     drawStars();
     drawMeteors(t / 1000);
 
     ctx.globalAlpha = 1;
+    mctx.globalAlpha = 1;
   }
 
   function onVisibility() {
@@ -399,7 +409,7 @@
 
   document.addEventListener("mousemove", function (e) {
     lastCX = e.clientX; lastCY = e.clientY;
-    mouse.x = lastCX + scrollX; mouse.y = lastCY + scrollY;
+    mouse.x = lastCX; mouse.y = lastCY;
   }, { passive: true });
   document.addEventListener("mouseleave", function () {
     lastCX = -9999; lastCY = -9999;
@@ -408,7 +418,7 @@
   document.addEventListener("touchmove", function (e) {
     if (e.touches && e.touches[0]) {
       lastCX = e.touches[0].clientX; lastCY = e.touches[0].clientY;
-      mouse.x = lastCX + scrollX; mouse.y = lastCY + scrollY;
+      mouse.x = lastCX; mouse.y = lastCY;
     }
   }, { passive: true });
   document.addEventListener("touchend", function () {

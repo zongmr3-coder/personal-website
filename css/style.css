@@ -296,6 +296,7 @@ body.sb-collapsed .main{margin-left:86px}
 /* ---------- 星海背景：闪烁星星 + 鼠标推开（方向A升级） ----------
    画布固定视口，星星用文档坐标绘制并随滚动偏移，全程铺满 */
 .star-bg{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
+.meteor-bg{position:fixed;inset:0;width:100%;height:100%;z-index:1;pointer-events:none}
 .main{position:relative;z-index:2}
 
 /* ---------- 移动端：折叠状态覆盖（冻结） ---------- */
