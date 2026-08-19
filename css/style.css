@@ -126,25 +126,8 @@ body.sb-collapsed .scroll-hint{left:calc(50% + 43px)}
 .tag{font-size:.85rem;color:var(--ink-soft);border:1px solid var(--bg-line);border-radius:999px;padding:5px 14px;font-family:var(--mono);transition:border-color .25s,color .25s}
 .tag:hover{border-color:var(--accent);color:var(--accent)}
 
-/* ---------- 经历 ---------- */
-.timeline{position:relative;padding-left:26px;margin-top:10px}
-.timeline::before{content:"";position:absolute;left:5px;top:6px;bottom:6px;width:1px;background:var(--bg-line)}
-.tl-item{position:relative;padding:22px 24px;margin-bottom:20px;background:var(--bg-card);border:1px solid var(--bg-line);border-radius:10px}
-.tl-item:last-child{margin-bottom:0}
-.tl-item.reveal{transition:opacity .7s ease,transform .3s ease,box-shadow .3s ease,border-color .3s ease}
-.tl-item:hover{border-color:var(--accent);box-shadow:var(--shadow-lift)}
-.tl-item.reveal:hover{transform:translateY(-3px)}
-.tl-dot{position:absolute;left:-26px;top:6px;width:11px;height:11px;border-radius:50%;background:var(--accent);box-shadow:0 0 0 4px rgba(100,255,218,.15)}
-.tl-dot::after{content:"";position:absolute;inset:-6px;border-radius:50%;border:1px solid rgba(100,255,218,.4);animation:tlPulse 2.6s ease-out infinite}
-@keyframes tlPulse{0%{transform:scale(.5);opacity:.9}70%{transform:scale(1.4);opacity:0}100%{opacity:0}}
-.tl-head{display:flex;justify-content:space-between;align-items:baseline;gap:14px;flex-wrap:wrap}
-.tl-head h3{font-size:1.2rem;font-weight:600}
 .tl-date{font-family:var(--mono);font-size:.8rem;color:var(--accent)}
-.tl-org{margin-top:4px;color:var(--ink-soft);font-size:.95rem}
-.tl-courses{margin-top:8px;color:var(--ink-soft);font-size:.93rem}
-.tl-list{margin-top:10px;color:var(--ink-soft);font-size:.93rem}
-.tl-list li{position:relative;padding-left:20px;margin-bottom:6px}
-.tl-list li::before{content:"▹";position:absolute;left:0;color:var(--accent)}/* ---------- 项目（可折叠 · 默认收起） ---------- */
+/* ---------- 项目（可折叠 · 默认收起） ---------- */
 .projects-list{display:flex;flex-direction:column;gap:20px}
 .project-item{background:var(--bg-card);border:1px solid var(--bg-line);border-radius:10px;overflow:hidden;transition:border-color .3s}
 .project-item:hover{border-color:var(--accent)}
@@ -181,15 +164,6 @@ body.sb-collapsed .scroll-hint{left:calc(50% + 43px)}
 .btn-solid:hover{background:#7CFFE4}
 .btn-outline{border:1.5px solid var(--accent);color:var(--accent)}
 .btn-outline:hover{background:var(--accent-dim)}
-
-/* ---------- 荣誉 ---------- */
-.awards-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:16px}
-.award-card{background:var(--bg-card);border:1px solid var(--bg-line);border-radius:10px;padding:24px 18px;text-align:center;box-shadow:var(--shadow-card);transition:transform .3s,border-color .3s,box-shadow .3s}
-.award-card:hover{transform:translateY(-4px);border-color:var(--accent);box-shadow:var(--shadow-lift)}
-.award-ico{width:46px;height:46px;margin:0 auto 12px;border-radius:10px;background:var(--accent-dim);border:1px solid rgba(100,255,218,.3);display:flex;align-items:center;justify-content:center;font-size:1.25rem}
-.award-ico svg{width:22px;height:22px}
-.award-card h3{font-size:1rem;font-weight:600;margin-bottom:6px}
-.award-card p{color:var(--ink-soft);font-size:.82rem}
 
 /* ---------- 留言板 ---------- */
 .guestbook-wrap{display:grid;grid-template-columns:5fr 7fr;gap:22px}
@@ -271,13 +245,13 @@ body.sb-collapsed .scroll-hint{left:calc(50% + 43px)}
   .main{margin-left:0}
   .hero{min-height:auto;padding:80px 0}
   .scroll-hint{left:50%}
-  .about-grid,.awards-grid{grid-template-columns:repeat(2,1fr)}
+  .about-grid{grid-template-columns:repeat(2,1fr)}
   .skills-grid,.guestbook-wrap,.contact-grid{grid-template-columns:1fr}
   .project-meta{grid-template-columns:1fr}
   .stat-bar{grid-template-columns:repeat(2,1fr)}
 }
 @media (max-width:600px){
-  .about-grid,.awards-grid{grid-template-columns:1fr}
+  .about-grid{grid-template-columns:1fr}
   .stat-bar{grid-template-columns:1fr 1fr}
   .avatar-ring{width:150px;height:150px}
   .hero{padding:64px 0}
@@ -446,7 +420,7 @@ body.sb-collapsed .sidebar-glow{width:86px}
   border-color:rgba(148,184,255,.18);
   box-shadow:var(--shadow-card),inset 0 1px 0 rgba(255,255,255,.05);
 }
-.about-card,.stat,.skill-group,.award-card,.contact-card,.gb-card,.gb-msg,.meta-chip,.mod-badge{
+.about-card,.stat,.skill-group,.contact-card,.gb-card,.gb-msg,.meta-chip,.mod-badge{
   background:rgba(13,28,52,.8);
   border-color:rgba(148,184,255,.16);
   box-shadow:var(--shadow-card),inset 0 1px 0 rgba(255,255,255,.04);
@@ -457,7 +431,7 @@ body.sb-collapsed .sidebar-glow{width:86px}
 }
 @supports not ((backdrop-filter:blur(1px)) or (-webkit-backdrop-filter:blur(1px))){
   .project-item,.mods-game-card,.mods-mod-card{background:rgba(17,34,64,.94)}
-  .about-card,.stat,.skill-group,.award-card,.contact-card,.gb-card,.gb-msg,.meta-chip,.mod-badge{background:rgba(17,34,64,.94)}
+  .about-card,.stat,.skill-group,.contact-card,.gb-card,.gb-msg,.meta-chip,.mod-badge{background:rgba(17,34,64,.94)}
   .form-field input,.form-field textarea,.sb-collapse,.sb-toggle{background:rgba(17,34,64,.9)}
 }
 
