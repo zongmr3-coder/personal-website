@@ -1,0 +1,170 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Roam / 方向二</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=DM+Mono:wght@400;500&family=Manrope:wght@500;600;700;800&family=Noto+Sans+SC:wght@500;600;700;800&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest"></script>
+  <style>
+    /* Assumption: a confident trip-planning tool for short, high-intent getaways. */
+    :root { --night:#18231f; --lime:#c7e678; --paper:#eef0e7; --orange:#ed7d4a; --white:#f9fbf4; --muted:#9aa8a0; --line:#31413b; --soft:#22312a; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--night); color:var(--white); font-family:"Noto Sans SC", sans-serif; overflow-x:hidden; }
+    a { color:inherit; text-decoration:none; }
+    .wrap { width:min(1260px, calc(100% - 56px)); margin:0 auto; }
+    .topbar { display:flex; justify-content:space-between; align-items:center; height:76px; border-bottom:1px solid var(--line); font-family:"DM Mono",monospace; font-size:11px; animation:fade-down .7s ease both; }
+    .logo { display:flex; gap:10px; align-items:center; font-weight:500; letter-spacing:.12em; }
+    .logo-mark { width:25px; height:25px; background:var(--lime); color:var(--night); display:grid; place-items:center; border-radius:50%; font-family:"Manrope",sans-serif; font-weight:800; transition:transform .35s ease, background .35s ease; }
+    .logo:hover .logo-mark { transform:rotate(18deg) scale(1.08); background:var(--orange); }
+    .top-links { display:flex; align-items:center; gap:22px; color:var(--muted); }
+    .top-links a { position:relative; transition:color .25s ease; }
+    .top-links a::after { content:""; position:absolute; left:0; right:100%; bottom:-7px; height:1px; background:var(--lime); transition:right .25s ease; }
+    .top-links a:hover, .top-links a:focus-visible { color:var(--lime); }
+    .top-links a:hover::after, .top-links a:focus-visible::after { right:0; }
+    .top-links .active { color:var(--lime); }
+    .profile { width:32px; height:32px; border:1px solid #617068; border-radius:50%; display:grid; place-items:center; color:var(--lime); transition:transform .25s ease, border-color .25s ease; }
+    .profile:hover { transform:translateY(-2px); border-color:var(--lime); }
+    .hero { display:grid; grid-template-columns:1.08fr .92fr; gap:40px; padding:60px 0 42px; }
+    .hero-copy { animation:rise-in .75s .1s cubic-bezier(.2,.8,.2,1) both; }
+    .eyebrow { color:var(--lime); font-family:"DM Mono",monospace; font-size:11px; letter-spacing:.1em; }
+    h1 { margin:14px 0 20px; max-width:650px; color:var(--white); font-family:"Manrope", "Noto Sans SC", sans-serif; font-size:96px; line-height:.92; letter-spacing:-.06em; text-wrap:balance; }
+    .hero p { max-width:440px; color:#aebbb0; line-height:1.8; font-size:15px; }
+    .searchbar { display:flex; align-items:center; gap:12px; width:min(460px, 100%); margin-top:28px; padding:6px; border:1px solid #56665d; background:var(--soft); transition:border-color .25s ease, box-shadow .25s ease, transform .25s ease; }
+    .searchbar:focus-within { border-color:var(--lime); box-shadow:0 0 0 4px rgba(199,230,120,.12); transform:translateY(-2px); }
+    .searchbar input { flex:1; min-width:0; border:0; outline:0; background:transparent; color:var(--white); padding:11px; font:inherit; }
+    .searchbar button { border:0; background:var(--lime); color:var(--night); width:42px; height:42px; display:grid; place-items:center; cursor:pointer; transition:background .25s ease, transform .25s ease; }
+    .searchbar button:hover, .searchbar button:focus-visible { background:var(--orange); transform:rotate(8deg) scale(1.04); }
+    .searchbar.is-searching button svg { animation:spin-once .55s ease; }
+    .searchbar-status { min-height:18px; margin-top:9px; color:var(--lime); font:10px "DM Mono",monospace; letter-spacing:.06em; opacity:.8; }
+    .hero-art { position:relative; min-height:380px; overflow:hidden; background:#283a30; animation:rise-in .8s .25s cubic-bezier(.2,.8,.2,1) both; }
+    .hero-art img { width:100%; height:100%; object-fit:cover; opacity:.76; filter:saturate(.8); transform:scale(1.06); animation:slow-pan 16s ease-in-out infinite alternate; }
+    .hero-art::after { content:""; position:absolute; inset:0; background:linear-gradient(135deg, rgba(21,35,30,.4), transparent 48%, rgba(237,125,74,.2)); }
+    .route-card { position:absolute; z-index:2; left:18px; bottom:18px; width:220px; padding:16px; background:var(--white); color:var(--night); animation:float-card 4.6s ease-in-out infinite; box-shadow:0 16px 30px rgba(0,0,0,.18); }
+    .route-card small { font:10px "DM Mono",monospace; color:#718078; letter-spacing:.08em; }
+    .route-card strong { display:block; margin-top:8px; font-family:"Manrope",sans-serif; font-size:21px; line-height:1.1; }
+    .route-card span { display:flex; align-items:center; gap:6px; margin-top:12px; color:#64736b; font:10px "DM Mono",monospace; }
+    .route-card span svg { color:var(--orange); }
+    .hero-stats { display:flex; gap:24px; margin-top:25px; color:#788a80; font:10px "DM Mono",monospace; letter-spacing:.04em; }
+    .hero-stats strong { display:block; margin-bottom:4px; color:var(--white); font:600 18px "Manrope",sans-serif; letter-spacing:-.04em; }
+    .panel { padding:26px 0 70px; border-top:1px solid var(--line); animation:rise-in .75s .45s cubic-bezier(.2,.8,.2,1) both; }
+    .panel-head { display:flex; align-items:center; justify-content:space-between; margin-bottom:18px; }
+    h2 { margin:0; font-family:"Manrope",sans-serif; font-size:22px; letter-spacing:-.03em; }
+    .view-all { display:flex; align-items:center; gap:7px; color:var(--lime); font:10px "DM Mono",monospace; transition:gap .25s ease; }
+    .view-all:hover { gap:12px; }
+    .place-grid { display:grid; grid-template-columns:repeat(4, 1fr); gap:12px; }
+    .place { position:relative; height:230px; overflow:hidden; background:#31443a; opacity:0; animation:card-in .7s cubic-bezier(.2,.8,.2,1) forwards; }
+    .place:nth-child(1) { animation-delay:.56s; }
+    .place:nth-child(2) { animation-delay:.66s; }
+    .place:nth-child(3) { animation-delay:.76s; }
+    .place:nth-child(4) { animation-delay:.86s; }
+    .place img { width:100%; height:100%; object-fit:cover; opacity:.73; transition:transform .45s cubic-bezier(.2,.8,.2,1), opacity .45s ease; }
+    .place:hover { transform:translateY(-5px); }
+    .place:hover img { transform:scale(1.07); opacity:.9; }
+    .place::after { content:""; position:absolute; inset:35% 0 0; background:linear-gradient(transparent, rgba(10,18,15,.88)); }
+    .place-copy { position:absolute; z-index:2; left:15px; right:15px; bottom:15px; transform:translateY(5px); transition:transform .35s ease; }
+    .place:hover .place-copy { transform:translateY(0); }
+    .place-copy small { color:var(--lime); font:10px "DM Mono",monospace; letter-spacing:.1em; }
+    .place-copy strong { display:block; margin-top:6px; font-size:19px; }
+    .place-copy span { display:block; margin-top:4px; color:#b7c2b9; font-size:11px; }
+    .assistant-section { padding:54px 0 58px; border-top:1px solid var(--line); }
+    .assistant-section-head { display:flex; align-items:flex-end; justify-content:space-between; gap:24px; margin-bottom:18px; }
+    .assistant-section-head h2 { max-width:640px; margin-top:12px; font-size:38px; line-height:1.05; }
+    .assistant-eyebrow { color:var(--lime); font:11px "DM Mono",monospace; letter-spacing:.1em; }
+    .assistant-intro { max-width:245px; margin:0; color:#8fa097; font-size:12px; line-height:1.75; }
+    .assistant-status { display:inline-flex; align-items:center; gap:7px; margin-top:14px; color:#8fa097; font:10px "DM Mono",monospace; }
+    .assistant-status::before { content:""; width:6px; height:6px; border-radius:50%; background:#687b70; }
+    .assistant-status.is-active::before { background:var(--lime); box-shadow:0 0 0 4px rgba(199,230,120,.12); animation:status-pulse 1.2s ease-in-out infinite; }
+    .assistant-workspace { display:grid; grid-template-columns:1.25fr .75fr; min-height:500px; border:1px solid #385047; background:#1d2a24; }
+    .assistant-chat { display:flex; min-width:0; flex-direction:column; border-right:1px solid #385047; }
+    .assistant-chat-head { display:flex; align-items:center; justify-content:space-between; padding:18px 20px; border-bottom:1px solid #385047; }
+    .assistant-persona { display:flex; align-items:center; gap:11px; }
+    .assistant-avatar { width:27px; height:27px; flex:0 0 27px; display:grid; place-items:center; border-radius:50%; background:var(--lime); color:var(--night); font:800 13px "Manrope",sans-serif; }
+    .assistant-persona strong { display:block; font:600 13px "Manrope",sans-serif; }
+    .assistant-persona span { display:block; margin-top:3px; color:#84958c; font:10px "DM Mono",monospace; }
+    .assistant-chat-actions { display:flex; align-items:center; gap:14px; }
+    .assistant-mode { color:var(--lime); font:10px "DM Mono",monospace; letter-spacing:.05em; }
+    .new-chat { display:flex; align-items:center; gap:5px; padding:6px 8px; border:1px solid #4b6257; background:transparent; color:#b6c4b9; font:10px "DM Mono",monospace; cursor:pointer; transition:border-color .25s ease, color .25s ease, transform .25s ease; }
+    .new-chat svg { width:13px; height:13px; }
+    .new-chat:hover, .new-chat:focus-visible { border-color:var(--lime); color:var(--lime); transform:translateY(-2px); }
+    .assistant-messages { flex:1; min-height:255px; max-height:335px; overflow:auto; padding:22px 20px 4px; scrollbar-color:#496057 transparent; }
+    .assistant-message { display:flex; align-items:flex-start; gap:10px; max-width:88%; margin-bottom:17px; animation:message-in .35s ease both; }
+    .assistant-message.user { justify-content:flex-end; margin-left:auto; }
+    .message-bubble { padding:12px 14px; background:#2a3a32; color:#dfe8dd; font-size:13px; line-height:1.72; }
+    .message-bubble.assistant-rich { max-width:100%; overflow-wrap:anywhere; }
+    .assistant-rich h3, .assistant-rich h4 { color:var(--white); font-family:"Manrope",sans-serif; line-height:1.3; }
+    .assistant-rich h3 { margin:1px 0 10px; font-size:15px; }
+    .assistant-rich h4 { margin:12px 0 7px; color:var(--lime); font-size:13px; }
+    .assistant-rich p { margin:0 0 10px; }
+    .assistant-rich p:last-child { margin-bottom:0; }
+    .assistant-rich ul, .assistant-rich ol { margin:7px 0 12px; padding-left:20px; }
+    .assistant-rich li { margin:5px 0; padding-left:2px; }
+    .assistant-rich li::marker { color:var(--lime); }
+    .assistant-rich ol li::marker { font-family:"DM Mono",monospace; font-size:11px; }
+    .assistant-rich hr { margin:14px 0; border:0; border-top:1px solid #496057; }
+    .assistant-rich strong { color:var(--lime); font-weight:700; }
+    .assistant-rich em { color:#f0c18c; font-style:normal; }
+    .assistant-rich code { display:inline-block; padding:1px 5px; background:#1d2923; color:#f0c18c; font:11px "DM Mono",monospace; }
+    .assistant-message.user .message-bubble { background:var(--lime); color:var(--night); }
+    .typing { display:flex; align-items:center; gap:4px; min-width:58px; }
+    .typing span { width:5px; height:5px; border-radius:50%; background:#87998d; animation:typing-bounce 1s ease-in-out infinite; }
+    .typing span:nth-child(2) { animation-delay:.13s; }
+    .typing span:nth-child(3) { animation-delay:.26s; }
+    .assistant-suggestions { display:flex; flex-wrap:wrap; gap:8px; padding:14px 20px 15px; border-top:1px solid #385047; }
+    .assistant-suggestion { border:1px solid #4b6257; background:transparent; color:#b6c4b9; padding:8px 10px; font:10px "DM Mono",monospace; cursor:pointer; transition:border-color .25s ease, color .25s ease, transform .25s ease; }
+    .assistant-suggestion:hover, .assistant-suggestion:focus-visible { border-color:var(--lime); color:var(--lime); transform:translateY(-2px); }
+    .assistant-compose { display:flex; gap:8px; margin:0 20px 20px; padding:5px; border:1px solid #56665d; background:#22312a; transition:border-color .25s ease, box-shadow .25s ease; }
+    .assistant-compose:focus-within { border-color:var(--lime); box-shadow:0 0 0 4px rgba(199,230,120,.1); }
+    .assistant-compose input { min-width:0; flex:1; border:0; outline:0; background:transparent; color:var(--white); padding:10px; font:13px "Noto Sans SC",sans-serif; }
+    .assistant-compose button { width:38px; height:38px; border:0; display:grid; place-items:center; background:var(--lime); color:var(--night); cursor:pointer; transition:background .25s ease, transform .25s ease; }
+    .assistant-compose button:hover, .assistant-compose button:focus-visible { background:var(--orange); transform:translateX(2px); }
+    .trip-brief { padding:22px; background:#eef0e7; color:var(--night); }
+    .brief-label { display:flex; justify-content:space-between; color:#718078; font:10px "DM Mono",monospace; letter-spacing:.08em; }
+    .brief-destination { margin:20px 0 6px; font:700 30px "Manrope",sans-serif; letter-spacing:-.06em; }
+    .brief-meta { color:#6e7d74; font:10px "DM Mono",monospace; letter-spacing:.06em; }
+    .brief-note { margin:22px 0; color:#596860; font-size:13px; line-height:1.65; }
+    .brief-divider { border:0; border-top:1px solid #cfd6ca; margin:0 0 14px; }
+    .brief-timeline { display:grid; gap:11px; padding:0; margin:0; list-style:none; }
+    .brief-timeline li { display:grid; grid-template-columns:25px 1fr; gap:10px; align-items:start; color:#596860; font-size:11px; line-height:1.55; }
+    .brief-timeline b { color:var(--orange); font:11px "DM Mono",monospace; }
+    .brief-budget { display:flex; justify-content:space-between; margin-top:22px; padding-top:14px; border-top:1px solid #cfd6ca; color:#718078; font:10px "DM Mono",monospace; }
+    .brief-budget strong { color:var(--night); font:700 14px "Manrope",sans-serif; }
+    .generate-plan { display:flex; align-items:center; justify-content:center; gap:8px; width:100%; margin-top:20px; padding:12px 14px; border:0; background:var(--night); color:var(--lime); font:10px "DM Mono",monospace; cursor:pointer; transition:background .25s ease, color .25s ease, transform .25s ease; }
+    .generate-plan:hover, .generate-plan:focus-visible { background:var(--orange); color:var(--white); transform:translateY(-2px); }
+    @keyframes fade-down { from { opacity:0; transform:translateY(-10px); } to { opacity:1; transform:none; } }
+    @keyframes rise-in { from { opacity:0; transform:translateY(18px); } to { opacity:1; transform:none; } }
+    @keyframes card-in { from { opacity:0; transform:translateY(20px); } to { opacity:1; transform:none; } }
+    @keyframes slow-pan { from { transform:scale(1.06) translate3d(0,0,0); } to { transform:scale(1.13) translate3d(-1.5%, -1%, 0); } }
+    @keyframes float-card { 0%,100% { transform:translateY(0); } 50% { transform:translateY(-7px); } }
+    @keyframes spin-once { from { transform:rotate(0); } to { transform:rotate(180deg); } }
+    @keyframes status-pulse { 0%,100% { opacity:1; } 50% { opacity:.35; } }
+    @keyframes message-in { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:none; } }
+    @keyframes typing-bounce { 0%,60%,100% { transform:translateY(0); } 30% { transform:translateY(-4px); } }
+    @media (max-width:800px) { .wrap { width:calc(100% - 32px); } .top-links a { display:none; } .hero { grid-template-columns:1fr; padding-top:42px; } h1 { font-size:58px; } .hero-art { min-height:330px; } .place-grid { grid-template-columns:repeat(2,1fr); } .hero-stats { gap:18px; } .assistant-section-head { display:block; } .assistant-section-head h2 { font-size:32px; } .assistant-intro { margin-top:16px; max-width:320px; } .assistant-workspace { grid-template-columns:1fr; } .assistant-chat { border-right:0; border-bottom:1px solid #385047; } .trip-brief { min-height:420px; } }
+    @media (prefers-reduced-motion:reduce) { *, *::before, *::after { animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }
+  </style>
+</head>
+<body>
+  <main class="wrap"><header class="topbar"><a class="logo" href="#"><span class="logo-mark">R</span><span>ROAM / 出发计划</span></a><nav class="top-links"><a class="active" href="#places">灵感</a><a href="#places">路线</a><a href="#places">收藏</a><span class="profile"><i data-lucide="user-round" width="15" height="15"></i></span></nav></header>
+    <section class="hero"><div class="hero-copy"><div class="eyebrow">TRIP PLANNER / 08.19</div><h1>周末，<br />去哪里？</h1><p>输入一个心动的目的地，找到适合现在出发的路线、住宿和一顿值得专程去吃的饭。</p><form class="searchbar" id="trip-search"><i data-lucide="search" width="17" height="17" color="#9aaba0"></i><input aria-label="搜索目的地" placeholder="试试：海边、温泉、两天一夜" /><button aria-label="搜索"><i data-lucide="arrow-up-right" width="17" height="17"></i></button></form><div class="searchbar-status" id="search-status" aria-live="polite">READY WHEN YOU ARE / 输入关键词开始</div><div class="hero-stats"><span><strong>2—3</strong>天的短途路线</span><span><strong>4.8</strong>旅人评分</span><span><strong>24h</strong>随时出发</span></div></div><div class="hero-art"><img src="https://images.unsplash.com/photo-1470770841072-f978cf4d019e?auto=format&fit=crop&w=1200&q=88" alt="山谷湖泊风景" /><div class="route-card"><small>EDITOR'S PICK / 02 DAYS</small><strong>安静的湖边<br />比闹钟更早醒来</strong><span><i data-lucide="map-pin" width="12" height="12"></i>长野 · 日本</span></div></div></section>
+    <section class="assistant-section" id="assistant"><div class="assistant-section-head"><div><div class="assistant-eyebrow">ROAM AI / YOUR TRAVEL COMPASS</div><h2>把模糊的想去，变成可以出发的计划。</h2><span class="assistant-status" id="assistant-status">演示模式 · 已准备好开始规划</span></div><p class="assistant-intro">告诉它你想去哪里、和谁一起、预算多少。它会边聊边整理一份可以继续修改的旅行草案。</p></div><div class="assistant-workspace"><section class="assistant-chat"><header class="assistant-chat-head"><div class="assistant-persona"><div class="assistant-avatar">R</div><div><strong>Roam Guide</strong><span>你的旅行智能帮手</span></div></div><div class="assistant-chat-actions"><button class="new-chat" id="new-chat" type="button" aria-label="开启新对话"><i data-lucide="plus" width="13" height="13"></i><span>新对话</span></button><span class="assistant-mode">LIVE ASSIST</span></div></header><div class="assistant-messages" id="assistant-messages"><div class="assistant-message assistant"><div class="assistant-avatar">R</div><div class="message-bubble">嗨，我是 Roam Guide。你可以直接告诉我：想去哪里、几天、预算和旅行节奏。我们先从一个模糊的念头开始。</div></div><div class="assistant-message assistant"><div class="assistant-avatar">R</div><div class="message-bubble">比如「这个周末想去温泉，不想换太多酒店」，我会帮你把它整理成一条能出发的路线。</div></div></div><div class="assistant-suggestions"><button class="assistant-suggestion" type="button" data-assistant-prompt="这个周末想去温泉，节奏慢一点">周末温泉</button><button class="assistant-suggestion" type="button" data-assistant-prompt="想找一个两天一夜的海边路线">两天海边</button><button class="assistant-suggestion" type="button" data-assistant-prompt="预算控制在每人 2000 元以内">控制预算</button></div><form class="assistant-compose" id="assistant-form"><input id="assistant-input" aria-label="告诉 Roam Guide 你的旅行想法" placeholder="告诉我你的旅行想法…" autocomplete="off" /><button type="submit" aria-label="发送消息"><i data-lucide="arrow-up-right" width="16" height="16"></i></button></form></section><aside class="trip-brief"><div class="brief-label"><span>TRIP BRIEF / DRAFT 01</span><span>同步中</span></div><div class="brief-destination" id="brief-destination">长野 · 日本</div><div class="brief-meta" id="brief-meta">03 DAYS / LAKE / SLOW</div><p class="brief-note" id="brief-note">安静的湖边，比闹钟更早醒来。先把旅程留白，再决定要去哪里。</p><hr class="brief-divider" /><ol class="brief-timeline" id="brief-timeline"><li><b>01</b><span>抵达松本 · 住进湖边小屋</span></li><li><b>02</b><span>轻徒步 · 小镇午餐 · 看晚霞</span></li><li><b>03</b><span>睡到自然醒 · 午后返程</span></li></ol><div class="brief-budget"><span>预计每人预算</span><strong>¥3,800—5,200</strong></div><button class="generate-plan" id="generate-plan" type="button">生成完整行程 <i data-lucide="arrow-up-right" width="15" height="15"></i></button></aside></div></section>
+    <section class="panel" id="places"><div class="panel-head"><h2>现在值得去</h2><a class="view-all" href="#places">查看全部 <i data-lucide="arrow-right" width="13" height="13"></i></a></div><div class="place-grid"><a class="place" href="#"><img src="https://images.unsplash.com/photo-1507525428034-b723cf961d3e?auto=format&fit=crop&w=700&q=88" alt="海岸"><div class="place-copy"><small>COAST / 01</small><strong>舟山群岛</strong><span>海风、渔火和两天留白</span></div></a><a class="place" href="#"><img src="https://images.unsplash.com/photo-1500530855697-b586d89ba3ee?auto=format&fit=crop&w=700&q=88" alt="山路"><div class="place-copy"><small>HIKE / 02</small><strong>四姑娘山</strong><span>在雪山脚下走一小段</span></div></a><a class="place" href="#"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?auto=format&fit=crop&w=700&q=88" alt="森林"><div class="place-copy"><small>FOREST / 03</small><strong>莫干山</strong><span>一场不赶时间的避暑</span></div></a><a class="place" href="#"><img src="https://images.unsplash.com/photo-1516483638261-f4dbaf036963?auto=format&fit=crop&w=700&q=88" alt="小镇"><div class="place-copy"><small>CITY / 04</small><strong>丽江古城</strong><span>把夜晚交给小巷和晚风</span></div></a></div></section>
+  </main><script>
+    window.ROAM_ASSISTANT_CONFIG = { mode: "mock", endpoint: "/api/dify/chat", user: "roam-demo-user" };
+    lucide.createIcons();
+    const search = document.querySelector('#trip-search');
+    const input = search.querySelector('input');
+    const status = document.querySelector('#search-status');
+    search.addEventListener('submit', (event) => {
+      event.preventDefault();
+      const query = input.value.trim();
+      search.classList.remove('is-searching');
+      void search.offsetWidth;
+      search.classList.add('is-searching');
+      status.textContent = query ? `正在为「${query}」整理 3 条出发路线` : '先输入一个目的地，再开始规划';
+    });
+  </script><script src="travel-assistant.js?v=20260819-8"></script>
+</body>
+</html>
