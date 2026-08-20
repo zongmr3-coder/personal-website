@@ -40,9 +40,24 @@
       en: "Minecraft",
       icon: "⛏️",
       color: "#5FA65A",
-      desc: "新模组规划中，敬请期待",
-      comingSoon: true,
-      mods: []
+      desc: "基于 Fabric 的 Minecraft 模组开发",
+      mods: [
+        {
+          name: "可合成附魔金苹果",
+          en: "Craftable Enchanted Golden Apple",
+          version: "v1.0.0",
+          status: "已完成",
+          statusType: "done",
+          date: "2026.08",
+          intro: "为 Minecraft 增加附魔金苹果的合成配方，让这个稀有道具可以通过合成获得。",
+          progress: "已完成 1.0.0 版本，提供可直接安装的 Fabric 模组文件（.jar），点击下方按钮下载体验。",
+          stack: ["Java", "Fabric", "Minecraft 1.21.11", "Fabric Loader 0.19.2", "GitHub"],
+          links: [
+            { label: "下载模组 v1.0.0", href: "downloads/enchanted-golden-apple-1.0.0-fabric-0.19.2.jar", type: "download" },
+            { label: "项目地址", href: "https://github.com/zongmr3-coder/craftable-enchanted-golden-apple", type: "outline" }
+          ]
+        }
+      ]
     },
     {
       id: "stardew",
