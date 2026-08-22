@@ -68,8 +68,8 @@
       var distance = Math.sqrt(dx * dx + dy * dy);
       if (distance < 150 && distance > 0.1) {
         var force = (150 - distance) / 150;
-        x += dx / distance * force * 22;
-        y += dy / distance * force * 22;
+        x -= dx / distance * force * 22;
+        y -= dy / distance * force * 22;
       }
       var alpha = 0.28 + Math.abs(Math.sin(seconds * 0.5 + point.phase)) * 0.5;
       context.fillStyle = point.white

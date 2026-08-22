@@ -9,8 +9,6 @@
   var page = document.querySelector(".neural-page");
   var canvas = document.querySelector(".neural-field");
   var boot = document.querySelector(".boot");
-  var transition = document.querySelector(".transition");
-  var pager = document.querySelectorAll(".pager button");
   if (!page || !canvas) return;
 
   var reduced = window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -27,6 +25,9 @@
   var composer;
   var bloomPass;
   var radiusStart = 0;
+  var raycaster;
+  var mousePlane;
+  var mouseWorld;
 
   function hash(value) {
     var x = Math.sin(value * 12.9898 + state.layout * 17.31) * 43758.5453;
@@ -105,7 +106,7 @@
           vec3 noise = curl(pos * 0.2);
           pos += noise * 2.5;
 
-          vec3 mousePos = vec3(uMouse.x * 15.0, uMouse.y * 10.0, 0.0);
+          vec3 mousePos = uMouse;
           float distToMouse = distance(pos, mousePos);
           if (distToMouse < 8.0) {
             float strength = (8.0 - distToMouse) / 8.0;
@@ -161,6 +162,9 @@
       camera = new THREE.PerspectiveCamera(75, innerWidth / innerHeight, 0.1, 100);
       camera.position.z = 10;
       camera.position.y = 2;
+      raycaster = new THREE.Raycaster();
+      mousePlane = new THREE.Plane(new THREE.Vector3(0, 0, 1), 0);
+      mouseWorld = new THREE.Vector3();
 
       renderer = new THREE.WebGLRenderer({
         canvas: canvas,
@@ -206,13 +210,14 @@
         var eased = introProgress < 0.5 ? 4 * introProgress * introProgress * introProgress : 1 - Math.pow(-2 * introProgress + 2, 3) / 2;
         material.uniforms.uRadius.value = 3 - 2 * eased;
         material.uniforms.uTime.value = reduced ? 0 : seconds;
-        material.uniforms.uMouse.value.set(pointer.x, pointer.y, 0);
 
-        particles.rotation.y = reduced ? 0 : seconds * 0.1;
-        particles.rotation.x = reduced ? 0 : Math.sin(seconds * 0.08) * 0.035;
         camera.position.x = reduced ? 0 : Math.sin(seconds * 0.1) * 2;
         camera.position.y = reduced ? 2 : 2 + Math.cos(seconds * 0.15) * 2;
         camera.lookAt(0, 0, 0);
+        camera.updateMatrixWorld();
+        raycaster.setFromCamera(pointer, camera);
+        if (!raycaster.ray.intersectPlane(mousePlane, mouseWorld)) mouseWorld.set(0, 0, 0);
+        material.uniforms.uMouse.value.copy(mouseWorld);
         composer.render();
       }
       draw(0);
@@ -271,23 +276,6 @@
     targetPointer.y = -(event.clientY / innerHeight * 2 - 1);
   }, { passive: true });
 
-  function startTransition(button) {
-    if (state.transitioning) return;
-    state.transitioning = true;
-    pager.forEach(function (item) { item.classList.remove("active"); });
-    button.classList.add("active");
-    state.fadeTarget = 0;
-    transition.classList.add("active");
-    setTimeout(function () {
-      reseed();
-      state.fadeTarget = 1;
-    }, 620);
-    setTimeout(function () {
-      transition.classList.remove("active");
-      state.transitioning = false;
-    }, 1640);
-  }
-
   function finishBoot() {
     window.__neuralStartReady = true;
     window.dispatchEvent(new Event("neural-start-ready"));
@@ -317,6 +305,5 @@
     setTimeout(finishBoot, reduced ? 120 : 920);
   }
 
-  pager.forEach(function (button) { button.addEventListener("click", function () { startTransition(button); }); });
   bootScene();
 }());
