@@ -29,7 +29,7 @@
           stack: ["C#", "tModLoader", "Terraria 1.3.5.3", "CalamityMod", "GitHub"],
           links: [
             { label: "下载模组 v1.0.0", href: "downloads/HongmengArk_v1.0.0.tmod", type: "download" },
-            { label: "查看源码", href: "https://github.com/zongmr3-coder/trmod-HM", type: "outline" }
+            { label: "项目地址", href: "https://github.com/zongmr3-coder/trmod-HM", type: "outline" }
           ]
         }
       ]
