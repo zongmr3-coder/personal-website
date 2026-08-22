@@ -289,6 +289,8 @@
   }
 
   function finishBoot() {
+    window.__neuralStartReady = true;
+    window.dispatchEvent(new Event("neural-start-ready"));
     page.classList.remove("loading");
     page.classList.add("is-ready");
     if (boot) boot.classList.add("done");
