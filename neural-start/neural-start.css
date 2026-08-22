@@ -44,6 +44,7 @@ button { cursor: pointer; }
 .tagline { max-width: 610px; margin: 0 auto; color: #9c99a8; font-size: 14px; line-height: 1.65; text-wrap: balance; }
 .telemetry { margin-top: 13px; color: #837991; font-family: "SFMono-Regular", Consolas, monospace; font-size: 10px; letter-spacing: .18em; }
 .deploy { display: inline-flex; align-items: center; gap: 12px; margin-top: 27px; padding: 13px 17px; border: 1px solid rgba(180,145,255,.65); border-radius: 7px; background: rgba(60,34,105,.3); box-shadow: inset 0 0 18px rgba(139,89,255,.13), 0 0 18px rgba(75,45,161,.18); color: var(--white); font-family: "SFMono-Regular", Consolas, monospace; font-size: 12px; letter-spacing: .12em; transition: background .3s, border-color .3s, box-shadow .3s, transform .3s; }
+.deploy-label { font-family: "Microsoft YaHei UI", "Microsoft YaHei", "PingFang SC", "Noto Sans SC", sans-serif; font-size: 12px; font-weight: 600; letter-spacing: .2em; }
 .deploy svg { width: 16px; height: 16px; color: #d6c8ff; transition: transform .3s; }
 .deploy:hover, .deploy:focus-visible { transform: translateY(-2px); border-color: #d9c6ff; outline: none; background: linear-gradient(110deg, rgba(144,85,255,.58), rgba(56,74,211,.56)); box-shadow: 0 0 28px rgba(142,92,255,.42), inset 0 0 20px rgba(198,173,255,.2); }
 .deploy:hover svg { transform: scale(1.1); }
